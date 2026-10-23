@@ -44,7 +44,7 @@ export function StoryDetailPage() {
 
   if (!post) {
     try {
-      const stored = localStorage.getItem("community_user_stories");
+      const stored = localStorage.getItem("ahp_community_stories_cache") || localStorage.getItem("community_user_stories");
       if (stored) {
         const userStories: CommunityPost[] = JSON.parse(stored);
         post = userStories.find((p) => p.id === storyId);

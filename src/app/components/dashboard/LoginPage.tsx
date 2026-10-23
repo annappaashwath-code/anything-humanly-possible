@@ -1,19 +1,51 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "motion/react";
-import { ArrowLeft, ArrowRight, Layers } from "lucide-react";
-import { setLoggedIn } from "./dashboardStore";
+import { ArrowLeft, ArrowRight, Layers, Loader2 } from "lucide-react";
+import { signInWithSupabase, signUpWithSupabase } from "./dashboardStore";
 
 export function LoginPage() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"login" | "signup">("login");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [infoMessage, setInfoMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoggedIn(name.trim() || "Explorer", email.trim());
-    navigate("/dashboard");
+    setError("");
+    setInfoMessage("");
+    setLoading(true);
+
+    try {
+      if (mode === "signup") {
+        const res = await signUpWithSupabase(name, email, password);
+        setLoading(false);
+        if (!res.success) {
+          setError(res.error || "Sign up failed");
+          return;
+        }
+        if (res.message) {
+          setInfoMessage(res.message);
+        } else {
+          navigate("/dashboard");
+        }
+      } else {
+        const res = await signInWithSupabase(email, password);
+        setLoading(false);
+        if (!res.success) {
+          setError(res.error || "Login failed");
+          return;
+        }
+        navigate("/dashboard");
+      }
+    } catch (err: any) {
+      setLoading(false);
+      setError(err.message || "An unexpected error occurred");
+    }
   };
 
   return (
@@ -67,8 +99,9 @@ export function LoginPage() {
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => { setName(e.target.value); setError(""); }}
                 placeholder="Your name"
+                required
                 className="w-full px-4 py-3 rounded-xl border border-black/[0.08] bg-[#fafafa] outline-none transition-all duration-200 focus:border-black/20 focus:bg-white"
                 style={{ fontSize: "0.875rem", fontWeight: 500, color: "#000000" }}
               />
@@ -85,7 +118,7 @@ export function LoginPage() {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); setError(""); }}
               placeholder="your@email.com"
               required
               className="w-full px-4 py-3 rounded-xl border border-black/[0.08] bg-[#fafafa] outline-none transition-all duration-200 focus:border-black/20 focus:bg-white"
@@ -102,28 +135,58 @@ export function LoginPage() {
             </label>
             <input
               type="password"
+              value={password}
+              onChange={(e) => { setPassword(e.target.value); setError(""); }}
               placeholder="••••••••"
               required
-              minLength={4}
+              minLength={6}
               className="w-full px-4 py-3 rounded-xl border border-black/[0.08] bg-[#fafafa] outline-none transition-all duration-200 focus:border-black/20 focus:bg-white"
               style={{ fontSize: "0.875rem", fontWeight: 500, color: "#000000" }}
             />
           </div>
 
+          {error && (
+            <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="text-red-500 text-xs">
+              {error}
+            </motion.p>
+          )}
+
+          {infoMessage && (
+            <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="text-emerald-600 text-xs">
+              {infoMessage}
+            </motion.p>
+          )}
+
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-black text-white hover:opacity-90 active:scale-[0.98] transition-all duration-300 cursor-pointer"
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-black text-white hover:opacity-90 active:scale-[0.98] transition-all duration-300 cursor-pointer disabled:opacity-60"
             style={{ fontSize: "0.875rem", fontWeight: 700 }}
           >
-            {mode === "login" ? "Enter Dashboard" : "Create & Enter"}
-            <ArrowRight size={14} />
+            {loading ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : mode === "login" ? (
+              <>
+                Enter Dashboard
+                <ArrowRight size={14} />
+              </>
+            ) : (
+              <>
+                Create & Enter
+                <ArrowRight size={14} />
+              </>
+            )}
           </button>
         </form>
 
         {/* Toggle mode */}
         <div className="text-center mt-6">
           <button
-            onClick={() => setMode(mode === "login" ? "signup" : "login")}
+            onClick={() => {
+              setMode(mode === "login" ? "signup" : "login");
+              setError("");
+              setInfoMessage("");
+            }}
             className="cursor-pointer"
             style={{ fontSize: "0.8125rem", fontWeight: 500, color: "#000000" }}
           >
@@ -139,14 +202,6 @@ export function LoginPage() {
               </>
             )}
           </button>
-        </div>
-
-        {/* Quick access note */}
-        <div className="text-center mt-8 pt-6 border-t border-black/[0.06]">
-          <p style={{ fontSize: "0.6875rem", fontWeight: 400, color: "#000000", lineHeight: 1.6 }}>
-            This is a prototype. Enter any email and password to access your personal dashboard.
-            Your progress is saved locally and to the cloud.
-          </p>
         </div>
       </motion.div>
     </div>

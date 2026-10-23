@@ -30,7 +30,15 @@ import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { ReflectionSection } from "./ReflectionSection";
 import { projectId, publicAnonKey } from "/utils/supabase/info";
-import { isLoggedIn, setLoggedIn, logout, loadProfile, type UserProfile } from "./dashboard/dashboardStore";
+import {
+  isLoggedIn,
+  setLoggedIn,
+  logout,
+  loadProfile,
+  signUpWithSupabase,
+  signInWithSupabase,
+  type UserProfile,
+} from "./dashboard/dashboardStore";
 
 import imgAchievements from "figma:asset/29142a1c4d6851e2cad1d8f647c25a618b4e3bbb.png";
 import imgLearn from "figma:asset/b387ce4369ed1375ae415e25a45d22662479b3fa.png";
@@ -264,20 +272,44 @@ export function CallToActionPage() {
     setAuthConfirmPassword("");
   };
 
-  const handleAuth = (e: React.FormEvent) => {
+  const [authSuccessMessage, setAuthSuccessMessage] = useState("");
+
+  const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!authEmail.trim()) { setAuthError("Please enter your email."); return; }
-    if (!authPassword.trim() || authPassword.length < 4) { setAuthError("Password must be at least 4 characters."); return; }
+    if (!authPassword.trim() || authPassword.length < 6) { setAuthError("Password must be at least 6 characters."); return; }
     if (authMode === "join" && authPassword !== authConfirmPassword) { setAuthError("Passwords do not match."); return; }
     setAuthError("");
+    setAuthSuccessMessage("");
     setAuthLoading(true);
-    setTimeout(() => {
-      setLoggedIn(authName.trim() || "Explorer", authEmail.trim());
-      setLoggedInState(true);
-      loadProfile().then(setUserProfile);
+
+    try {
+      if (authMode === "join") {
+        const res = await signUpWithSupabase(authName, authEmail, authPassword);
+        setAuthLoading(false);
+        if (!res.success) {
+          setAuthError(res.error || "Sign up failed");
+          return;
+        }
+        if (res.message) {
+          setAuthSuccessMessage(res.message);
+        }
+        setLoggedInState(true);
+        loadProfile().then(setUserProfile);
+      } else {
+        const res = await signInWithSupabase(authEmail, authPassword);
+        setAuthLoading(false);
+        if (!res.success) {
+          setAuthError(res.error || "Login failed");
+          return;
+        }
+        setLoggedInState(true);
+        loadProfile().then(setUserProfile);
+      }
+    } catch (err: any) {
       setAuthLoading(false);
-      setAuthEmail(""); setAuthPassword(""); setAuthConfirmPassword(""); setAuthName("");
-    }, 600);
+      setAuthError(err.message || "Authentication error");
+    }
   };
 
   const handleLogout = () => { logout(); setLoggedInState(false); setUserProfile(null); };
@@ -469,6 +501,12 @@ export function CallToActionPage() {
                         {authError && (
                           <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="text-red-500" style={{ fontSize: "0.75rem", fontWeight: 500 }}>
                             {authError}
+                          </motion.p>
+                        )}
+
+                        {authSuccessMessage && (
+                          <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="text-emerald-600" style={{ fontSize: "0.75rem", fontWeight: 500 }}>
+                            {authSuccessMessage}
                           </motion.p>
                         )}
 

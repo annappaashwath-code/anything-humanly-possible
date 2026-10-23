@@ -38,72 +38,20 @@ import {
   type MentorModule,
 } from "./mentorData";
 import { projectId, publicAnonKey } from "/utils/supabase/info";
-import { logActivity } from "../dashboard/dashboardStore";
+import { logActivity, loadProgress, saveProgress, getSessionId } from "../dashboard/dashboardStore";
 
 const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-ef0ca726`;
 
 /* ────────────────────────────────────────────
-   Persistent Progress (Supabase KV + localStorage fallback)
+   Persistent Progress (Supabase KV + Unified Store)
    ──────────────────────────────────────────── */
 
-const PROGRESS_KEY = "ahp-mentor-progress";
-const SESSION_ID_KEY = "ahp-session-id";
-
-function getSessionId(): string {
-  let id = localStorage.getItem(SESSION_ID_KEY);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(SESSION_ID_KEY, id);
-  }
-  return id;
-}
-
-function getLocalProgress(): Record<string, boolean> {
-  try {
-    return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}");
-  } catch {
-    return {};
-  }
-}
-
-function saveLocalProgress(p: Record<string, boolean>) {
-  localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
-}
-
 async function fetchProgress(): Promise<Record<string, boolean>> {
-  try {
-    const sessionId = getSessionId();
-    const res = await fetch(`${API_BASE}/progress/${sessionId}`, {
-      headers: { Authorization: `Bearer ${publicAnonKey}` },
-    });
-    if (!res.ok) throw new Error(`Status ${res.status}`);
-    const data = await res.json();
-    const remote = data.progress || {};
-    const local = getLocalProgress();
-    const merged = { ...local, ...remote };
-    saveLocalProgress(merged);
-    return merged;
-  } catch (err) {
-    console.log("Falling back to localStorage for progress:", err);
-    return getLocalProgress();
-  }
+  return await loadProgress();
 }
 
 async function persistProgress(p: Record<string, boolean>) {
-  saveLocalProgress(p);
-  try {
-    const sessionId = getSessionId();
-    await fetch(`${API_BASE}/progress/${sessionId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${publicAnonKey}`,
-      },
-      body: JSON.stringify({ progress: p }),
-    });
-  } catch (err) {
-    console.log("Failed to persist progress to server:", err);
-  }
+  await saveProgress(p);
 }
 
 /* ────────────────────────────────────────────
@@ -297,6 +245,7 @@ async function getAIResponse(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${publicAnonKey}`,
+        apikey: publicAnonKey,
       },
       body: JSON.stringify({
         systemPrompt,
@@ -916,7 +865,7 @@ function LessonContent({
       try {
         const res = await fetch(`${API_BASE}/enrich-lesson`, {
           method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}`, apikey: publicAnonKey },
           body: JSON.stringify({
             categoryName: "Mastery Course",
             mentorName: mentorName || "Mentor",

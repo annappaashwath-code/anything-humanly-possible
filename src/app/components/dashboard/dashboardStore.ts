@@ -1,10 +1,11 @@
 /**
  * Dashboard Store — API layer + state types for the AHP Dashboard
  * Uses Supabase KV via the Edge Function server for persistence.
- * Session is identified by a localStorage UUID (pre-auth pattern).
+ * Synchronized with Supabase Authentication.
  */
 
 import { projectId, publicAnonKey } from "/utils/supabase/info";
+import { supabase } from "../../lib/supabase";
 import {
   mentorCategories,
   type MentorCategory,
@@ -14,8 +15,10 @@ import {
 } from "../tools/mentorData";
 
 const API = `https://${projectId}.supabase.co/functions/v1/make-server-ef0ca726`;
+
 const headers = (extra?: Record<string, string>) => ({
   Authorization: `Bearer ${publicAnonKey}`,
+  apikey: publicAnonKey,
   "Content-Type": "application/json",
   ...extra,
 });
@@ -24,8 +27,28 @@ const headers = (extra?: Record<string, string>) => ({
 
 const SESSION_KEY = "ahp-session-id";
 const PROFILE_KEY = "ahp-dashboard-profile";
+const SUPABASE_UID_KEY = "ahp-supabase-user-id";
+
+let cachedUserId: string | null = localStorage.getItem(SUPABASE_UID_KEY);
+
+// Listen to Supabase Auth state changes
+supabase.auth.onAuthStateChange(async (_event, session) => {
+  if (session?.user) {
+    cachedUserId = session.user.id;
+    localStorage.setItem(SUPABASE_UID_KEY, session.user.id);
+    localStorage.setItem("ahp-logged-in", "true");
+  } else {
+    cachedUserId = null;
+    localStorage.removeItem(SUPABASE_UID_KEY);
+    localStorage.removeItem("ahp-logged-in");
+  }
+});
 
 export function getSessionId(): string {
+  if (cachedUserId) return `user_${cachedUserId}`;
+  const storedUid = localStorage.getItem(SUPABASE_UID_KEY);
+  if (storedUid) return `user_${storedUid}`;
+
   let id = localStorage.getItem(SESSION_KEY);
   if (!id) {
     id = crypto.randomUUID();
@@ -123,7 +146,10 @@ async function kvPost<T>(route: string, body: T): Promise<boolean> {
 export async function loadProfile(): Promise<UserProfile> {
   const sid = getSessionId();
   const data = await kvGet<{ data: UserProfile }>(`/dashboard/profile/${sid}`);
-  if (data?.data) return data.data;
+  if (data?.data) {
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(data.data));
+    return data.data;
+  }
   // Fallback to localStorage
   try {
     const local = localStorage.getItem(PROFILE_KEY);
@@ -143,7 +169,10 @@ export async function saveProfile(profile: UserProfile): Promise<void> {
 export async function loadProgress(): Promise<Record<string, boolean>> {
   const sid = getSessionId();
   const data = await kvGet<{ progress: Record<string, boolean> }>(`/progress/${sid}`);
-  if (data?.progress) return data.progress;
+  if (data?.progress) {
+    localStorage.setItem("ahp-mentor-progress", JSON.stringify(data.progress));
+    return data.progress;
+  }
   try {
     return JSON.parse(localStorage.getItem("ahp-mentor-progress") || "{}");
   } catch {
@@ -162,7 +191,10 @@ export async function saveProgress(progress: Record<string, boolean>): Promise<v
 export async function loadActivity(): Promise<ActivityEvent[]> {
   const sid = getSessionId();
   const data = await kvGet<{ data: ActivityEvent[] }>(`/dashboard/activity/${sid}`);
-  if (data?.data) return data.data;
+  if (data?.data) {
+    localStorage.setItem("ahp-activity", JSON.stringify(data.data));
+    return data.data;
+  }
   try {
     return JSON.parse(localStorage.getItem("ahp-activity") || "[]");
   } catch {
@@ -171,7 +203,6 @@ export async function loadActivity(): Promise<ActivityEvent[]> {
 }
 
 export async function saveActivity(events: ActivityEvent[]): Promise<void> {
-  // Keep last 100 events
   const trimmed = events.slice(-100);
   localStorage.setItem("ahp-activity", JSON.stringify(trimmed));
   const sid = getSessionId();
@@ -195,7 +226,10 @@ export async function logActivity(event: Omit<ActivityEvent, "id" | "timestamp">
 export async function loadMentorMemories(): Promise<MentorMemory[]> {
   const sid = getSessionId();
   const data = await kvGet<{ data: MentorMemory[] }>(`/dashboard/mentor-memory/${sid}`);
-  if (data?.data) return data.data;
+  if (data?.data) {
+    localStorage.setItem("ahp-mentor-memories", JSON.stringify(data.data));
+    return data.data;
+  }
   try {
     return JSON.parse(localStorage.getItem("ahp-mentor-memories") || "[]");
   } catch {
@@ -219,7 +253,10 @@ export async function saveMentorMemory(memory: MentorMemory): Promise<MentorMemo
 export async function loadEnrolledCourses(): Promise<EnrolledCourse[]> {
   const sid = getSessionId();
   const data = await kvGet<{ data: EnrolledCourse[] }>(`/dashboard/enrolled/${sid}`);
-  if (data?.data) return data.data;
+  if (data?.data) {
+    localStorage.setItem("ahp-enrolled", JSON.stringify(data.data));
+    return data.data;
+  }
   try {
     return JSON.parse(localStorage.getItem("ahp-enrolled") || "[]");
   } catch {
@@ -238,9 +275,9 @@ export async function enrollCourse(categorySlug: string, mentorId: string): Prom
   return courses;
 }
 
-// ─── Full Dashboard Load ────────────────────────────────────
+// ─── Composite Loader ───────────────────────────────────────
 
-export async function loadDashboard(): Promise<DashboardData> {
+export async function loadDashboardData(): Promise<DashboardData> {
   const [profile, progress, activity, mentorMemories, enrolledCourses] = await Promise.all([
     loadProfile(),
     loadProgress(),
@@ -248,37 +285,70 @@ export async function loadDashboard(): Promise<DashboardData> {
     loadMentorMemories(),
     loadEnrolledCourses(),
   ]);
-  return { profile, progress, activity, mentorMemories, enrolledCourses };
+
+  return {
+    profile,
+    progress,
+    activity,
+    mentorMemories,
+    enrolledCourses,
+  };
 }
 
-// ─── Computed helpers ───────────────────────────────────────
+export const loadDashboard = loadDashboardData;
 
-export function getAllLessons(): { lesson: MentorLesson; module: MentorModule; mentor: MentorPersona; category: MentorCategory }[] {
-  const result: { lesson: MentorLesson; module: MentorModule; mentor: MentorPersona; category: MentorCategory }[] = [];
+// ─── Computed stats ─────────────────────────────────────────
+
+export function getAllLessons(): {
+  lesson: MentorLesson;
+  module: MentorModule;
+  mentor: MentorPersona;
+  category: MentorCategory;
+}[] {
+  const all: {
+    lesson: MentorLesson;
+    module: MentorModule;
+    mentor: MentorPersona;
+    category: MentorCategory;
+  }[] = [];
   for (const cat of mentorCategories) {
     for (const mentor of cat.mentors) {
       for (const mod of mentor.course.modules) {
         for (const lesson of mod.lessons) {
-          result.push({ lesson, module: mod, mentor, category: cat });
+          all.push({ lesson, module: mod, mentor, category: cat });
         }
       }
     }
   }
-  return result;
+  return all;
 }
 
-export function computeOverallProgress(progress: Record<string, boolean>): number {
-  const all = getAllLessons();
-  if (all.length === 0) return 0;
-  const completed = all.filter((l) => progress[l.lesson.id]);
-  return Math.round((completed.length / all.length) * 100);
+export function getCategoryLessons(categorySlug: string) {
+  return getAllLessons().filter((l) => l.category.slug === categorySlug);
+}
+
+export function computeCategoryProgress(
+  categorySlug: string,
+  progress: Record<string, boolean>,
+): number {
+  const lessons = getCategoryLessons(categorySlug);
+  if (lessons.length === 0) return 0;
+  const completed = lessons.filter((l) => progress[l.lesson.id]);
+  return Math.round((completed.length / lessons.length) * 100);
 }
 
 export function computeCourseProgress(
-  progress: Record<string, boolean>,
   mentorId: string,
+  progress: Record<string, boolean>,
 ): number {
   const lessons = getAllLessons().filter((l) => l.mentor.id === mentorId);
+  if (lessons.length === 0) return 0;
+  const completed = lessons.filter((l) => progress[l.lesson.id]);
+  return Math.round((completed.length / lessons.length) * 100);
+}
+
+export function computeOverallProgress(progress: Record<string, boolean>): number {
+  const lessons = getAllLessons();
   if (lessons.length === 0) return 0;
   const completed = lessons.filter((l) => progress[l.lesson.id]);
   return Math.round((completed.length / lessons.length) * 100);
@@ -294,9 +364,35 @@ export function getNextLesson(
   return all.find((l) => !progress[l.lesson.id]) ?? null;
 }
 
+export function calculateOverallProgress(progress: Record<string, boolean>): {
+  completed: number;
+  total: number;
+  percentage: number;
+} {
+  let total = 0;
+  let completed = 0;
+
+  for (const cat of mentorCategories) {
+    for (const mentor of cat.mentors) {
+      for (const mod of mentor.course.modules) {
+        for (const lesson of mod.lessons) {
+          total++;
+          if (progress[lesson.id]) completed++;
+        }
+      }
+    }
+  }
+
+  return {
+    completed,
+    total,
+    percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
+  };
+}
+
 export function computeMasteryStage(progress: Record<string, boolean>): MasteryStage {
-  const pct = computeOverallProgress(progress);
-  if (pct >= 75) return "impact";
+  const { percentage: pct } = calculateOverallProgress(progress);
+  if (pct >= 80) return "impact";
   if (pct >= 50) return "mastery";
   if (pct >= 25) return "growth";
   return "foundation";
@@ -326,10 +422,99 @@ export function getRecentCompletions(progress: Record<string, boolean>, activity
     .reverse();
 }
 
-// ─── "Logged in" check (localStorage simulation) ────────────
+// ─── Real Supabase Auth Integration ─────────────────────────
 
 export function isLoggedIn(): boolean {
   return localStorage.getItem("ahp-logged-in") === "true";
+}
+
+export async function signUpWithSupabase(
+  name: string,
+  email: string,
+  password: string
+): Promise<{ success: boolean; error?: string; message?: string }> {
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim().toLowerCase(),
+      password,
+      options: {
+        data: { name: name.trim() || "Explorer" },
+      },
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    if (data.user) {
+      cachedUserId = data.user.id;
+      localStorage.setItem(SUPABASE_UID_KEY, data.user.id);
+      localStorage.setItem("ahp-logged-in", "true");
+
+      const profile: UserProfile = {
+        name: name.trim() || "Explorer",
+        email: email.trim().toLowerCase(),
+        avatar: "",
+        joinedAt: new Date().toISOString(),
+        masteryStage: "foundation",
+      };
+      await saveProfile(profile);
+
+      // Check if email confirmation is required
+      if (data.session === null) {
+        return {
+          success: true,
+          message: "Account created! Please check your email to verify your address.",
+        };
+      }
+
+      return { success: true };
+    }
+
+    return { success: false, error: "Unable to create account" };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Failed to create account" };
+  }
+}
+
+export async function signInWithSupabase(
+  email: string,
+  password: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    if (data.user) {
+      cachedUserId = data.user.id;
+      localStorage.setItem(SUPABASE_UID_KEY, data.user.id);
+      localStorage.setItem("ahp-logged-in", "true");
+
+      // Sync user profile
+      const meta = data.user.user_metadata;
+      const profileName = meta?.name || email.split("@")[0] || "Explorer";
+      const existing = await loadProfile();
+      if (!existing.email) {
+        await saveProfile({
+          ...existing,
+          name: profileName,
+          email: email.trim().toLowerCase(),
+        });
+      }
+
+      return { success: true };
+    }
+
+    return { success: false, error: "Invalid login credentials" };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Login failed" };
+  }
 }
 
 export function setLoggedIn(name?: string, email?: string): void {
@@ -342,10 +527,18 @@ export function setLoggedIn(name?: string, email?: string): void {
       joinedAt: new Date().toISOString(),
       masteryStage: "foundation",
     };
-    localStorage.setItem("ahp-dashboard-profile", JSON.stringify(profile));
+    saveProfile(profile);
   }
 }
 
-export function logout(): void {
+export async function logout(): Promise<void> {
+  cachedUserId = null;
+  localStorage.removeItem(SUPABASE_UID_KEY);
   localStorage.removeItem("ahp-logged-in");
+  localStorage.removeItem(PROFILE_KEY);
+  try {
+    await supabase.auth.signOut();
+  } catch (err) {
+    console.warn("Supabase sign out error:", err);
+  }
 }

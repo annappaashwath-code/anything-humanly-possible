@@ -32,6 +32,7 @@ import {
   type CommunityPost,
   type UpcomingEvent,
 } from "./communityData";
+import { fetchCommunityStories, publishCommunityStory } from "../../lib/communityService";
 
 // ─── Helpers ─────────────────────────────────────────────────
 
@@ -854,10 +855,15 @@ export function CommunityPage() {
   const [showModal, setShowModal] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [sortBy, setSortBy] = useState<"recent" | "popular">("recent");
-  const [userStories, setUserStories] = useState<CommunityPost[]>(loadUserStories);
+  const [posts, setPosts] = useState<CommunityPost[]>(defaultPosts);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchCommunityStories().then((loaded) => {
+      if (loaded && loaded.length > 0) {
+        setPosts(loaded);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -866,26 +872,21 @@ export function CommunityPage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleSubmitStory = useCallback((story: CommunityPost) => {
-    setUserStories((prev) => {
-      const updated = [story, ...prev];
-      saveUserStories(updated);
-      return updated;
-    });
+  const handleSubmitStory = useCallback(async (story: CommunityPost) => {
+    setPosts((prev) => [story, ...prev]);
+    const updated = await publishCommunityStory(story);
+    setPosts(updated);
   }, []);
-
-  // Combine default + user stories
-  const allPosts = useMemo(() => [...userStories, ...defaultPosts], [userStories]);
 
   // Filter & sort
   const filteredPosts = useMemo(() => {
-    let posts = [...allPosts];
+    let result = [...posts];
     if (activeTag) {
-      posts = posts.filter((p) => p.tags.includes(activeTag));
+      result = result.filter((p) => p.tags.includes(activeTag));
     }
     if (search.trim()) {
       const q = search.toLowerCase();
-      posts = posts.filter(
+      result = result.filter(
         (p) =>
           p.title.toLowerCase().includes(q) ||
           p.summary.toLowerCase().includes(q) ||
@@ -894,10 +895,10 @@ export function CommunityPage() {
       );
     }
     if (sortBy === "popular") {
-      posts.sort((a, b) => b.likes - a.likes);
+      result.sort((a, b) => b.likes - a.likes);
     }
-    return posts;
-  }, [search, activeTag, sortBy, allPosts]);
+    return result;
+  }, [search, activeTag, sortBy, posts]);
 
   const featuredPosts = filteredPosts.filter((p) => p.featured);
   const regularPosts = filteredPosts.filter((p) => !p.featured);
