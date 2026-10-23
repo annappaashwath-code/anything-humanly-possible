@@ -45,16 +45,23 @@ supabase.auth.onAuthStateChange(async (_event, session) => {
 });
 
 export function getSessionId(): string {
-  if (cachedUserId) return `user_${cachedUserId}`;
-  const storedUid = localStorage.getItem(SUPABASE_UID_KEY);
-  if (storedUid) return `user_${storedUid}`;
-
-  let id = localStorage.getItem(SESSION_KEY);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(SESSION_KEY, id);
+  let rawId = "";
+  if (cachedUserId) {
+    rawId = `user_${cachedUserId}`;
+  } else {
+    const storedUid = localStorage.getItem(SUPABASE_UID_KEY);
+    if (storedUid) {
+      rawId = `user_${storedUid}`;
+    } else {
+      let id = localStorage.getItem(SESSION_KEY);
+      if (!id) {
+        id = crypto.randomUUID();
+        localStorage.setItem(SESSION_KEY, id);
+      }
+      rawId = id;
+    }
   }
-  return id;
+  return rawId.replace(/[^a-zA-Z0-9_-]/g, "_");
 }
 
 // ─── Types ──────────────────────────────────────────────────
@@ -331,16 +338,22 @@ export function computeCategoryProgress(
   categorySlug: string,
   progress: Record<string, boolean>,
 ): number {
+  const safeProgress = progress || {};
   const lessons = getCategoryLessons(categorySlug);
   if (lessons.length === 0) return 0;
-  const completed = lessons.filter((l) => progress[l.lesson.id]);
+  const completed = lessons.filter((l) => safeProgress[l.lesson.id]);
   return Math.round((completed.length / lessons.length) * 100);
 }
 
 export function computeCourseProgress(
-  mentorId: string,
-  progress: Record<string, boolean>,
+  arg1: any,
+  arg2: any,
 ): number {
+  const progress: Record<string, boolean> =
+    typeof arg1 === "object" && arg1 !== null ? arg1 : arg2 || {};
+  const mentorId: string =
+    typeof arg1 === "string" ? arg1 : typeof arg2 === "string" ? arg2 : "";
+
   const lessons = getAllLessons().filter((l) => l.mentor.id === mentorId);
   if (lessons.length === 0) return 0;
   const completed = lessons.filter((l) => progress[l.lesson.id]);
@@ -348,9 +361,10 @@ export function computeCourseProgress(
 }
 
 export function computeOverallProgress(progress: Record<string, boolean>): number {
+  const safeProgress = progress || {};
   const lessons = getAllLessons();
   if (lessons.length === 0) return 0;
-  const completed = lessons.filter((l) => progress[l.lesson.id]);
+  const completed = lessons.filter((l) => safeProgress[l.lesson.id]);
   return Math.round((completed.length / lessons.length) * 100);
 }
 
@@ -358,10 +372,11 @@ export function getNextLesson(
   progress: Record<string, boolean>,
   mentorId?: string,
 ): { lesson: MentorLesson; module: MentorModule; mentor: MentorPersona; category: MentorCategory } | null {
+  const safeProgress = progress || {};
   const all = mentorId
     ? getAllLessons().filter((l) => l.mentor.id === mentorId)
     : getAllLessons();
-  return all.find((l) => !progress[l.lesson.id]) ?? null;
+  return all.find((l) => !safeProgress[l.lesson.id]) ?? null;
 }
 
 export function calculateOverallProgress(progress: Record<string, boolean>): {
@@ -369,6 +384,7 @@ export function calculateOverallProgress(progress: Record<string, boolean>): {
   total: number;
   percentage: number;
 } {
+  const safeProgress = progress || {};
   let total = 0;
   let completed = 0;
 
@@ -377,7 +393,7 @@ export function calculateOverallProgress(progress: Record<string, boolean>): {
       for (const mod of mentor.course.modules) {
         for (const lesson of mod.lessons) {
           total++;
-          if (progress[lesson.id]) completed++;
+          if (safeProgress[lesson.id]) completed++;
         }
       }
     }
@@ -399,15 +415,16 @@ export function computeMasteryStage(progress: Record<string, boolean>): MasteryS
 }
 
 export function getCompletedMilestones(progress: Record<string, boolean>): string[] {
+  const safeProgress = progress || {};
   const milestones: string[] = [];
   for (const cat of mentorCategories) {
     for (const mentor of cat.mentors) {
       for (const mod of mentor.course.modules) {
-        const allDone = mod.lessons.every((l) => progress[l.id]);
+        const allDone = mod.lessons.every((l) => safeProgress[l.id]);
         if (allDone) milestones.push(`${mentor.name}: ${mod.title}`);
       }
       const allCourseDone = mentor.course.modules.every((m) =>
-        m.lessons.every((l) => progress[l.id]),
+        m.lessons.every((l) => safeProgress[l.id]),
       );
       if (allCourseDone) milestones.push(`${mentor.name}: Full Course Complete`);
     }
@@ -416,7 +433,8 @@ export function getCompletedMilestones(progress: Record<string, boolean>): strin
 }
 
 export function getRecentCompletions(progress: Record<string, boolean>, activity: ActivityEvent[]): ActivityEvent[] {
-  return activity
+  const safeActivity = activity || [];
+  return safeActivity
     .filter((e) => e.type === "lesson_completed" || e.type === "milestone_unlocked")
     .slice(-10)
     .reverse();

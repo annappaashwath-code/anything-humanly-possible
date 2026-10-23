@@ -1867,7 +1867,7 @@ export function MentorSessionPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [progress, setProgress] = useState<Record<string, boolean>>(getLocalProgress());
+  const [progress, setProgress] = useState<Record<string, boolean>>({});
   const [isAIMode, setIsAIMode] = useState<boolean | null>(null);
   const [milestonePopup, setMilestonePopup] = useState<string | null>(null);
   const [isMentorSpeaking, setIsMentorSpeaking] = useState(false);

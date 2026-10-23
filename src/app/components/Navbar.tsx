@@ -120,7 +120,7 @@ export function Navbar({ darkHero = false }: { darkHero?: boolean }) {
           ) : (
             <div className="flex items-center gap-2 ml-3">
               <button
-                onClick={() => navigate("/join?mode=login")}
+                onClick={() => navigate("/login")}
                 className={`px-4 py-2 rounded-full transition-all duration-300 cursor-pointer ${
                   onDark
                     ? "text-white hover:bg-white/10"
@@ -131,7 +131,7 @@ export function Navbar({ darkHero = false }: { darkHero?: boolean }) {
                 Login
               </button>
               <button
-                onClick={() => navigate("/join?mode=join")}
+                onClick={() => navigate("/join")}
                 className={`px-5 py-2 rounded-full transition-all duration-300 cursor-pointer ${
                   onDark
                     ? "bg-white text-black hover:opacity-90"
@@ -202,7 +202,7 @@ export function Navbar({ darkHero = false }: { darkHero?: boolean }) {
                   <button
                     onClick={() => {
                       setMobileOpen(false);
-                      navigate("/join?mode=login");
+                      navigate("/login");
                     }}
                     className="mt-2 px-5 py-3 rounded-xl border border-black/[0.08] text-black hover:bg-black/[0.03] transition-colors cursor-pointer"
                     style={{ fontSize: "0.9375rem", fontWeight: 600 }}
@@ -212,7 +212,7 @@ export function Navbar({ darkHero = false }: { darkHero?: boolean }) {
                   <button
                     onClick={() => {
                       setMobileOpen(false);
-                      navigate("/join?mode=join");
+                      navigate("/join");
                     }}
                     className="mt-1 px-5 py-3 rounded-xl bg-black text-white hover:opacity-90 transition-colors cursor-pointer"
                     style={{ fontSize: "0.9375rem", fontWeight: 600 }}

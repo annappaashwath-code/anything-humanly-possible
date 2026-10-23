@@ -12,6 +12,7 @@ import { CoursePage } from "./components/tools/CoursePage";
 import { CommunityPage } from "./components/community/CommunityPage";
 import { StoryDetailPage } from "./components/community/StoryDetailPage";
 import { CallToActionPage } from "./components/CallToActionPage";
+import { LoginPage } from "./components/dashboard/LoginPage";
 import { GetStartedPage } from "./components/GetStartedPage";
 import { DashboardLayout } from "./components/dashboard/DashboardLayout";
 import { DashboardHome } from "./components/dashboard/DashboardHome";
@@ -43,7 +44,7 @@ export const router = createBrowserRouter([
       { path: "tools/:categorySlug/:mentorId", Component: MentorSessionPage },
       { path: "tools/:categorySlug", Component: MentorSelectPage },
       { path: "join", Component: CallToActionPage },
-      { path: "login", element: <Navigate to="/join" replace /> },
+      { path: "login", Component: LoginPage },
       { path: "get-started", Component: GetStartedPage },
 
       // ─── Dashboard Routes (logged-in environment) ───
@@ -57,6 +58,9 @@ export const router = createBrowserRouter([
           { path: "profile", Component: ProfilePage },
         ],
       },
+
+      // ─── Catch-all Fallback ───
+      { path: "*", element: <Navigate to="/" replace /> },
     ],
   },
 ]);

@@ -249,7 +249,11 @@ export function CallToActionPage() {
     try {
       const res = await fetch(`${API_BASE}/subscribe`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${publicAnonKey}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${publicAnonKey}`,
+          apikey: publicAnonKey,
+        },
         body: JSON.stringify({ email: email.trim().toLowerCase() }),
       });
       if (!res.ok) {
