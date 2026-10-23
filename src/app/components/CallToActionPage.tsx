@@ -291,11 +291,9 @@ export function CallToActionPage() {
           setAuthError(res.error || "Sign up failed");
           return;
         }
-        if (res.message) {
-          setAuthSuccessMessage(res.message);
-        }
         setLoggedInState(true);
         loadProfile().then(setUserProfile);
+        navigate("/dashboard");
       } else {
         const res = await signInWithSupabase(authEmail, authPassword);
         setAuthLoading(false);
@@ -305,6 +303,7 @@ export function CallToActionPage() {
         }
         setLoggedInState(true);
         loadProfile().then(setUserProfile);
+        navigate("/dashboard");
       }
     } catch (err: any) {
       setAuthLoading(false);
