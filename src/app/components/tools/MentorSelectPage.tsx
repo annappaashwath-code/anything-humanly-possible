@@ -32,6 +32,7 @@ const personaStyles: Record<string, PersonaStyle> = {
   agriculture: { accentColor: "#16a34a", iconBg: "bg-green-50", tagBg: "bg-green-50", tagColor: "#16a34a", ctaStyle: "bg-black text-white", initialsShape: "rounded-2xl", borderAccent: "border-l-4 border-l-green-400" },
   climate: { accentColor: "#059669", iconBg: "bg-emerald-50", tagBg: "bg-emerald-50", tagColor: "#059669", ctaStyle: "bg-black text-white", initialsShape: "rounded-xl", borderAccent: "border-t-4 border-t-emerald-500" },
   health: { accentColor: "#dc2626", iconBg: "bg-red-50", tagBg: "bg-red-50", tagColor: "#dc2626", ctaStyle: "bg-black text-white", initialsShape: "rounded-full", borderAccent: "border-l-4 border-l-red-400" },
+  "personal-training": { accentColor: "#ea580c", iconBg: "bg-orange-50", tagBg: "bg-orange-50", tagColor: "#ea580c", ctaStyle: "bg-black text-white", initialsShape: "rounded-xl", borderAccent: "border-l-4 border-l-orange-500" },
   creator: { accentColor: "#f59e0b", iconBg: "bg-amber-50", tagBg: "bg-amber-50", tagColor: "#f59e0b", ctaStyle: "bg-black text-white", initialsShape: "rounded-2xl", borderAccent: "border-b-4 border-b-amber-400" },
   philosophy: { accentColor: "#7c3aed", iconBg: "bg-violet-50", tagBg: "bg-violet-50", tagColor: "#7c3aed", ctaStyle: "bg-black text-white", initialsShape: "rounded-lg", borderAccent: "border-t-4 border-t-violet-400" },
   systems: { accentColor: "#0284c7", iconBg: "bg-sky-50", tagBg: "bg-sky-50", tagColor: "#0284c7", ctaStyle: "bg-black text-white", initialsShape: "rounded-xl", borderAccent: "border-l-4 border-l-sky-400" },

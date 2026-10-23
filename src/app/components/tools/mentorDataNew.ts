@@ -1,5 +1,5 @@
 import {
-  Globe, Heart, Wand2, Scale, Network, Megaphone, Lightbulb, Cpu,
+  Globe, Heart, Wand2, Scale, Network, Megaphone, Lightbulb, Cpu, Dumbbell,
 } from "lucide-react";
 import type { MentorCategory } from "./mentorData";
 
@@ -1155,5 +1155,546 @@ export const newMentorCategories: MentorCategory[] = [
         },
       },
     ],
+  },
+  // ════════════════════════════════════════════
+  // 9. Personal Training & Fitness Coaching
+  // ════════════════════════════════════════════
+  {
+    id: "personal-training",
+    slug: "personal-training",
+    label: "Personal Training",
+    tagline: "Master human movement, strength, biomechanics & coaching",
+    description: "From functional anatomy, resistance training, and progressive overload to movement screening, injury prevention, client psychology, and business building — master the art and science of elite personal training.",
+    icon: Dumbbell,
+    color: "#ea580c",
+    gradient: "from-amber-600 via-orange-500 to-rose-600",
+    mentors: [
+      {
+        id: "atlas",
+        name: "Atlas",
+        title: "Master Strength & Conditioning Coach",
+        isMaster: true,
+        tagline: "Strength is a skill — build it with precision and purpose",
+        personality: "Disciplined, biomechanically rigorous, deeply encouraging. Atlas combines sports science with decades of coaching under the iron to turn lifting into a precise, transformative craft.",
+        avatar: "🏋️",
+        initials: "AT",
+        envTheme: { bg: "#100904", accent: "#f97316", mood: "iron" },
+        voiceConfig: { pitch: 0.95, rate: 1.0, voiceHint: "male" },
+        specialties: ["Strength & Conditioning", "Biomechanics & Kinetics", "Progressive Overload", "Periodization", "Compound Lifting Mastery"],
+        greeting: "Welcome! I am Atlas, your Master Strength & Conditioning mentor. Strength is not merely moving load from point A to point B — it is the highest expression of human biomechanics, neuromuscular coordination, and joint longevity. Whether you are coaching an athlete to podium performance or helping a client build pain-free functional resilience, the rules of progressive overload, moment arms, and force vectors never change. Let us master the iron.",
+        encouragement: [
+          "Your biomechanical eye is getting sharp — you spotted the knee valgus immediately!",
+          "That periodization plan balances fatigue and adaptation with master-level precision.",
+          "You are coaching the movement, not just counting reps. That is the hallmark of an elite coach.",
+        ],
+        course: {
+          id: "atlas-strength",
+          title: "The Science of Strength & Conditioning",
+          overview: "Master functional anatomy, force vectors, barbell mechanics, and periodization. Learn to assess movement, cue clients with clarity, manage training volume, and design world-class strength programs.",
+          totalDuration: "32 hours",
+          learningDuration: "6–8 weeks",
+          difficulty: "Intermediate",
+          modules: [
+            {
+              id: "sc-1",
+              title: "Functional Anatomy & Biomechanical Fundamentals",
+              description: "The skeletal, muscular, and nervous systems under load.",
+              lessons: [
+                {
+                  id: "sc-1-1",
+                  title: "Skeletal-Muscular Architecture & Force Vectors",
+                  duration: "55 min",
+                  content: "Understanding human movement begins with the musculoskeletal levers that produce force. Muscles do not simply pull bones; they generate internal moments around joint axes that must overcome external resistance.\n\nEvery exercise presents a specific line of force relative to the center of mass. In a barbell squat, the line of gravity drops vertically through the mid-foot. The perpendicular distance from that line to each joint axis (hip, knee, ankle) determines the moment arm and thus which muscle groups work hardest.\n\nWhen you coach, your job is to manipulate these levers: adjusting stance width, bar placement (high bar vs. low bar), and grip width to align forces favorably with client anatomy.",
+                  keyPoints: [
+                    "Muscles produce internal torque to balance external moment arms",
+                    "The bar path must remain over the mid-foot for biomechanical equilibrium",
+                    "Individual limb ratios (femur vs. torso length) dictate ideal movement geometry",
+                    "Understanding prime movers vs. synergists and stabilizers prevents overuse injuries"
+                  ],
+                  practiceTask: "Film yourself or a training partner performing 5 reps of a barbell squat from the side. Trace the vertical bar path and measure the relative distance to the hip and knee joints at parallel depth.",
+                  reflectionQuestion: "Why is forcing every client into an identical squat stance biomechanically flawed?"
+                },
+                {
+                  id: "sc-1-2",
+                  title: "Joint Levers, Moment Arms & Mechanical Advantage",
+                  duration: "50 min",
+                  content: "The human body operates primarily on third-class levers: the effort is applied between the fulcrum and the load. While this sacrifices mechanical advantage (requiring muscles to generate immense force), it maximizes range of motion and angular velocity.\n\nA classic example is the bicep curl: the elbow is the fulcrum, the bicep insertion on the radius is the effort (just inches from the elbow), and the dumbbell in the hand is the load. When the forearm is parallel to the ground (at 90 degrees of flexion), the moment arm of the dumbbell is at its maximum, creating the peak point of mechanical difficulty.\n\nMaster trainers understand resistance curves and match them with muscle strength curves using free weights, cables, and accommodating resistance like bands and chains.",
+                  keyPoints: [
+                    "Third-class levers trade force output for velocity and range of motion",
+                    "Peak resistance occurs when the moment arm perpendicular to gravity is longest",
+                    "Strength curves vary: ascending (squat), descending (hamstring curl), or bell-shaped (bicep curl)",
+                    "Cables and bands alter resistance profiles to overload different ranges"
+                  ],
+                  practiceTask: "Compare the resistance curve of a dumbbell lateral raise versus a cable lateral raise set at hip height. Diagram where peak tension occurs in each exercise.",
+                  reflectionQuestion: "How can understanding resistance curves help you choose the best exercise for hypertrophy versus athletic power?"
+                },
+                {
+                  id: "sc-1-3",
+                  title: "Neuromuscular Adaptations & Energy Systems",
+                  duration: "60 min",
+                  content: "In the first 4 to 8 weeks of resistance training, strength gains are overwhelmingly neurological, not hypertrophic. The central nervous system learns to coordinate motor units through rate coding (firing frequency), motor unit recruitment according to Henneman's Size Principle, and reducing antagonist co-contraction.\n\nEnergy systems power this work: the phosphagen (ATP-CP) system powers maximal efforts under 10 seconds; anaerobic glycolysis fuels 30 to 90 second bouts; and oxidative phosphorylation drives aerobic recovery between sets.\n\nProgramming appropriate rest intervals between sets (2 to 5 minutes for strength vs. 60 to 90 seconds for metabolic conditioning) dictates which physiological pathway is stimulated and how fully phosphocreatine stores replenish.",
+                  keyPoints: [
+                    "Early strength gains are driven by motor unit synchronization and rate coding",
+                    "Henneman's Size Principle dictates smaller slow-twitch units recruit before fast-twitch units",
+                    "ATP-CP restoration requires 3 to 5 minutes of rest for complete phosphocreatine resynthesis",
+                    "Mitochondrial density and capillary beds govern work capacity and inter-set recovery"
+                  ],
+                  practiceTask: "Design an energy-system specific training session for an athlete needing both maximal 3-rep strength and repeat-sprint ability.",
+                  reflectionQuestion: "Why do beginner lifters experience rapid strength jumps without noticeable muscle cross-sectional area growth?"
+                }
+              ]
+            },
+            {
+              id: "sc-2",
+              title: "The Foundational Compound Movements",
+              description: "Coaching mastery for the squat, hinge, push, and pull patterns.",
+              lessons: [
+                {
+                  id: "sc-2-1",
+                  title: "The Squat Pattern: Depth, Stance & Torso Mechanics",
+                  duration: "65 min",
+                  content: "The squat is a foundational human movement pattern and the premier lower-body compound exercise. It requires simultaneous ankle dorsiflexion, knee flexion, and hip flexion while maintaining a rigid, neutral spinal column under compressive load.\n\nKey coaching checkpoints include: establishing a tripod foot (heel, 1st metatarsal, 5th metatarsal), initiating with hips and knees simultaneously, driving the knees in line with the toes to create hip abduction torque, and descending until the hip crease dips just below the top of the patella.\n\nRecognizing and correcting butt wink (posterior pelvic tilt at the bottom of the squat) requires identifying whether the cause is anatomical acetabular depth, restricted ankle mobility, or motor control breakdown.",
+                  keyPoints: [
+                    "Tripod foot pressure creates the kinetic foundation for whole-body stability",
+                    "Torso inclination is governed by femur-to-torso ratio, not personal preference",
+                    "Butt wink is often caused by ankle dorsiflexion limitations rather than hamstring tightness",
+                    "Verbal cues should be external (e.g. spread the floor) rather than internal"
+                  ],
+                  practiceTask: "Conduct a 5-minute squat coaching clinic with a volunteer. Identify one limiting factor (ankle, hip, or bracing) and apply an immediate corrective cue.",
+                  reflectionQuestion: "Why are external cues ('push the floor away') more effective for motor learning than internal cues ('contract your quadriceps')?"
+                },
+                {
+                  id: "sc-2-2",
+                  title: "The Hip Hinge & Deadlift: Posterior Chain Dominance",
+                  duration: "60 min",
+                  content: "The hip hinge is the king of posterior chain recruitment, activating the gluteus maximus, hamstrings, and erector spinae. Unlike the squat, the hip hinge maximizes hip displacement backward while minimizing forward knee travel.\n\nIn the conventional deadlift, the setup is critical: the bar sits over the mid-foot (1 inch from shins), the lifter pulls the slack out of the barbell, engages the lats (protecting the lumbar spine via the thoracolumbar fascia), and wedges the hips into position before initiating the pull.\n\nThe lockout is achieved by squeezing the glutes forward into the bar, not by hyperextending the lumbar spine.",
+                  keyPoints: [
+                    "The hip hinge is horizontal hip translation with soft knees, distinct from knee-dominant squatting",
+                    "Engaging the lats creates isometric stiffness across the entire spinal column",
+                    "Pulling the slack out of the bar removes eccentric whip and establishes starting tension",
+                    "Lockout requires full hip extension via gluteal contraction without spinal hyperextension"
+                  ],
+                  practiceTask: "Teach the wall tap hip-hinge drill to a beginner. Ensure their shins remain vertical while their hips travel backward to touch the wall 6 inches behind them.",
+                  reflectionQuestion: "When would you prescribe a trap bar deadlift or Romanian deadlift over a conventional barbell deadlift from the floor?"
+                },
+                {
+                  id: "sc-2-3",
+                  title: "Horizontal & Vertical Pressing: Shoulder Complex & Scapular Rhythm",
+                  duration: "55 min",
+                  content: "Pressing strength requires understanding the scapulohumeral rhythm: for every 2 degrees of glenohumeral elevation, the scapula must rotate upward by 1 degree. When pressing overhead, the scapulae must upwardly rotate, elevate, and posterior tilt.\n\nIn the bench press, the scapulae must remain retracted and depressed into the bench to provide a solid, stable shelf and open the subacromial space. The grip should create stacked wrists directly above vertical forearms at the bottom touchpoint.\n\nOverhead pressing demands full thoracic extension and glenohumeral mobility; without it, clients will compensate by hyperextending the lumbar spine, placing undue shear stress on the lower back.",
+                  keyPoints: [
+                    "Bench press stability relies on active scapular retraction and depression",
+                    "Overhead pressing requires dynamic scapular upward rotation and thoracic extension",
+                    "Stacked wrist and elbow joints ensure optimal vertical force transmission",
+                    "Leg drive in the bench press creates whole-body kinetic rigidity"
+                  ],
+                  practiceTask: "Assess overhead press form in the sagittal plane. Check whether the client can lock out a barbell directly over the crown of the head without anterior pelvic tilt or rib flare.",
+                  reflectionQuestion: "Why is pressing from an unstable surface (like a Swiss ball) counterproductive for developing maximal upper-body strength?"
+                }
+              ]
+            },
+            {
+              id: "sc-3",
+              title: "Program Design, Periodization & Fatigue",
+              description: "Designing periodized programs that produce consistent, long-term progression.",
+              lessons: [
+                {
+                  id: "sc-3-1",
+                  title: "Progressive Overload: Volume, Intensity & Frequency",
+                  duration: "60 min",
+                  content: "Progressive overload is the cornerstone of all physical adaptation: the body only adapts when exposed to a stimulus greater than it has previously encountered. This can be achieved through increasing load (intensity), total sets and reps (volume), exercise frequency, or density (work completed in less time).\n\nFor hypertrophy, training volume is the primary driver, typically within 10 to 20 challenging sets per muscle group per week. For strength, intensity (% of 1RM) and neurological specificity take precedence.\n\nEvery increase in stimulus must be balanced against systemic recovery capability to avoid non-functional overreaching.",
+                  keyPoints: [
+                    "Overload can be achieved through load, volume, movement quality, or density",
+                    "Weekly volume thresholds between 10-20 hard sets per muscle group maximize hypertrophy",
+                    "Intensity of effort (RIR 1-3) ensures high-threshold motor unit recruitment",
+                    "More volume is only better if the client has the systemic recovery bandwidth to adapt"
+                  ],
+                  practiceTask: "Audit an existing 4-week client program. Calculate total weekly set volume per muscle group and project a 5% progressive volume/intensity increase over month two.",
+                  reflectionQuestion: "How do you distinguish between functional overreaching that leads to supercompensation and chronic overtraining?"
+                },
+                {
+                  id: "sc-3-2",
+                  title: "Periodization Models: Linear, Daily Undulating & Block",
+                  duration: "65 min",
+                  content: "Periodization is the systematic planning of athletic training to achieve peak performance at specific points while mitigating injury risk. There are three primary paradigms:\n\n1. Linear Periodization: Progresses from high-volume, low-intensity hypertrophy work toward low-volume, high-intensity strength and peaking. Ideal for beginners and intermediate athletes.\n\n2. Daily Undulating Periodization (DUP): Varies volume and intensity within each weekly microcycle (e.g., Monday Hypertrophy, Wednesday Strength, Friday Power). Highly effective for preventing training plateaus.\n\n3. Block Periodization: Concentrated training mesocycles focusing on one primary biological adaptation at a time (Accumulation -> Transmutation -> Realization).",
+                  keyPoints: [
+                    "Linear periodization develops an aerobic/hypertrophic base before peaking intensity",
+                    "DUP prevents neurological accommodation by undulating stimulus within the week",
+                    "Block periodization utilizes residual training effects for advanced competitors",
+                    "The simplest periodization model that drives progress is always the best model to use"
+                  ],
+                  practiceTask: "Draft an 8-week DUP microcycle for an intermediate lifter training 3 days per week with Squat, Bench Press, and Deadlift.",
+                  reflectionQuestion: "Why does an advanced athlete require block periodization while a novice makes faster progress on simple linear progression?"
+                },
+                {
+                  id: "sc-3-3",
+                  title: "Fatigue Management, RPE/RIR & Deload Protocols",
+                  duration: "55 min",
+                  content: "Fitness and fatigue are two sides of the Banister Impulse-Response Model: every training bout increases fitness, but it also increases fatigue. Because fatigue dissipates faster than fitness, planned deloads unmask true adaptation.\n\nSubjective autoregulation using RPE (Rating of Perceived Exertion) and RIR (Reps in Reserve) allows trainers to adjust load according to daily readiness. An RPE 8 means the client could perform exactly 2 more reps before technical failure (2 RIR).\n\nDeload weeks (typically reducing volume by 50% while holding intensity around 80%) should be scheduled every 4 to 8 weeks depending on training age, age, life stress, and sleep quality.",
+                  keyPoints: [
+                    "The Fitness-Fatigue model demonstrates that real performance is Fitness minus Fatigue",
+                    "RIR/RPE autoregulates training around life stressors, sleep, and nutrition variances",
+                    "Deloads allow connective tissue remodeling, central nervous system recovery, and glycogen replenishment",
+                    "Ignoring early signs of systemic fatigue leads to plateaus, tendonitis, and burnout"
+                  ],
+                  practiceTask: "Create a deload protocol for a client experiencing joint achiness, elevated resting heart rate, and stalled lift numbers after a 6-week heavy strength block.",
+                  reflectionQuestion: "How does teaching a client RIR empower them to make smarter decisions during independent workouts?"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        id: "kaya",
+        name: "Kaya",
+        title: "Movement Screening & Corrective Exercise Coach",
+        tagline: "Move well before you move often — restore the body's natural balance",
+        personality: "Attentive, holistic, biomechanically intuitive. Kaya diagnoses postural imbalances, eliminates compensations, and unlocks pain-free athletic longevity.",
+        avatar: "🧘",
+        initials: "KA",
+        envTheme: { bg: "#0d0a08", accent: "#fb923c", mood: "alignment" },
+        voiceConfig: { pitch: 1.08, rate: 0.96, voiceHint: "female" },
+        specialties: ["Corrective Exercise", "Functional Movement Screen", "Postural Assessment", "Joint Mobility", "Injury Prevention"],
+        greeting: "Hello! I am Kaya, your corrective exercise and movement screening mentor. Loading dysfunction only produces stronger dysfunction. My mission is to teach you how to look at human movement like a master detective — spotting subtle kinetic chain breaks, restoring joint mobility, and programming corrective drills so your clients move with effortless grace and zero pain. Let us build resilience from the inside out.",
+        encouragement: [
+          "Your kinetic chain assessment caught the root cause, not just the symptom!",
+          "That corrective sequence restored hip internal rotation smoothly.",
+          "You understand that stability and mobility are two sides of the same coin.",
+        ],
+        course: {
+          id: "kaya-corrective",
+          title: "Corrective Exercise & Movement Screening",
+          overview: "Learn systematic movement assessments (FMS, Overhead Squat), diagnose upper and lower crossed syndromes, and implement the 4-phase corrective exercise continuum to eliminate pain and restore function.",
+          totalDuration: "26 hours",
+          learningDuration: "4–6 weeks",
+          difficulty: "Beginner",
+          modules: [
+            {
+              id: "ce-1",
+              title: "Kinetic Chain Analysis & Movement Screening",
+              description: "Systematic protocols for uncovering movement compensations.",
+              lessons: [
+                {
+                  id: "ce-1-1",
+                  title: "The Kinetic Chain & Joint-by-Joint Concept",
+                  duration: "50 min",
+                  content: "The human body is an interconnected chain of segments where action at one joint directly influences adjacent joints. Michael Boyle and Gray Cook popularized the Joint-by-Joint concept, which reveals an alternating pattern of mobility and stability throughout the body:\n\n- Foot: Stability\n- Ankle: Mobility (sagittal)\n- Knee: Stability\n- Hip: Mobility (multi-planar)\n- Lumbar Spine: Stability\n- Thoracic Spine: Mobility\n- Scapula: Stability\n- Glenohumeral: Mobility\n\nWhen a mobile joint becomes restricted (such as stiff ankles or tight hips), the body forces the adjacent stable joint (the knee or lower back) to compensate by moving outside its intended plane, precipitating chronic pain and acute injury.",
+                  keyPoints: [
+                    "The body alternates between mobile and stable joints from foot to cervical spine",
+                    "Loss of ankle mobility causes knee valgus and lumbar flexion compensations",
+                    "The lumbar spine requires isometric stiffness, not excessive mobility under load",
+                    "Treating the site of pain without addressing adjacent joint function fails to cure dysfunction"
+                  ],
+                  practiceTask: "Map out the Joint-by-Joint checklist for a client presenting with non-specific lower back stiffness during running or squatting. Where are the likely mobility restrictions?",
+                  reflectionQuestion: "Why is treating only the painful joint usually addressing the victim rather than the criminal?"
+                },
+                {
+                  id: "ce-1-2",
+                  title: "Upper & Lower Crossed Syndromes Diagnosis",
+                  duration: "55 min",
+                  content: "Vladimir Janda identified predictable patterns of muscular imbalance resulting from prolonged sedentary postures like desk work:\n\n1. Upper Crossed Syndrome: Hyperactive and shortened pectorals and upper trapezius/levator scapulae cross with inhibited, weakened deep neck flexors and middle/lower trapezius and serratus anterior. Results in forward head posture, rounded shoulders, and thoracic kyphosis.\n\n2. Lower Crossed Syndrome: Hyperactive, shortened hip flexors (iliopsoas, rectus femoris) and lumbar erectors cross with inhibited, lengthened gluteus maximus and deep abdominal core. Results in anterior pelvic tilt, hyperlordosis, and hamstring overactivity.\n\nPersonal trainers must inhibit and lengthen the overactive culprits before strengthening the underactive stabilizers.",
+                  keyPoints: [
+                    "Janda's crossed syndromes reveal reciprocal inhibition patterns across posture",
+                    "Upper Crossed: tight chest/neck extensors inhibit lower traps and deep neck flexors",
+                    "Lower Crossed: tight hip flexors reciprocally inhibit glute contraction",
+                    "Strengthening a muscle without first lengthening its antagonist is ineffective"
+                  ],
+                  practiceTask: "Conduct a static postural assessment on yourself or a partner from anterior, posterior, and lateral views. Note any signs of upper or lower crossed syndrome.",
+                  reflectionQuestion: "How does reciprocal inhibition explain why clients who sit all day struggle to feel their glutes fire during squats?"
+                },
+                {
+                  id: "ce-1-3",
+                  title: "The Overhead Squat Assessment: A Systematic Diagnostic",
+                  duration: "60 min",
+                  content: "The Overhead Squat Assessment (OHSA) is the gold standard dynamic movement screen in sports medicine and personal training. By placing the arms overhead and squatting, the client challenges the entire kinetic chain simultaneously.\n\nView the client from three angles over 5 repetitions:\n1. Anterior View: Look at the feet (turn out?) and knees (move inward/valgus or outward/varus?).\n2. Lateral View: Look at the LPHC (excessive forward lean? low back arches or rounds?) and upper body (arms fall forward?).\n3. Posterior View: Look at the heels (rise off floor?) and pelvis (asymmetrical weight shift?).\n\nEach compensation directly points to probable overactive and underactive muscle pairings.",
+                  keyPoints: [
+                    "Overhead Squat challenges mobility and stability across every major kinetic checkpoint",
+                    "Knees caving inward (valgus) indicates overactive adductors and underactive gluteus medius",
+                    "Arms falling forward indicates tight latissimus dorsi and pectorals restricting shoulder flexion",
+                    "Excessive forward lean points to restricted ankle dorsiflexion and overactive hip flexors"
+                  ],
+                  practiceTask: "Film an Overhead Squat assessment of 5 reps from anterior and lateral views. Document every kinetic compensation observed and list the primary overactive and underactive muscles.",
+                  reflectionQuestion: "What is the difference between a mobility restriction and a motor control dysfunction during an assessment?"
+                }
+              ]
+            },
+            {
+              id: "ce-2",
+              title: "Mobility, Stability & Motor Control",
+              description: "Restoring range of motion, joint centration, and core bracing.",
+              lessons: [
+                {
+                  id: "ce-2-1",
+                  title: "Ankle Dorsiflexion & Hip Capsule Mobility Protocols",
+                  duration: "55 min",
+                  content: "Ankle dorsiflexion and hip capsule mobility are the twin gateways to lower body movement quality. Normal ankle dorsiflexion requires at least 35-40 degrees or a 4-inch knee-to-wall distance with heel planted.\n\nIf dorsiflexion is restricted by talocrural joint mechanics, banded joint distractions (mobilization with movement) help the talus glide posteriorly. If soft tissue is the limiter, foam rolling and dynamic stretching of the gastrocnemius and soleus restore glide.\n\nFor the hip, addressing the posterior and anterior joint capsules via 90/90 hip mobility drills, frog stretches, and quadruped rockbacks restores essential internal and external rotation.",
+                  keyPoints: [
+                    "The knee-to-wall test quantifies functional ankle dorsiflexion reliably",
+                    "Banded joint distraction targets capsular stiffness; stretching targets muscle tissue",
+                    "Hip internal rotation (minimum 35 degrees) is essential for pain-free squatting and running",
+                    "90/90 transitions develop active end-range control, not just passive flexibility"
+                  ],
+                  practiceTask: "Perform the knee-to-wall dorsiflexion test on both ankles. Measure difference in inches. Apply a 3-minute banded mobilization protocol and re-test.",
+                  reflectionQuestion: "Why is passive stretching alone insufficient for creating lasting mobility improvements in training clients?"
+                },
+                {
+                  id: "ce-2-2",
+                  title: "Thoracic Spine Mobility & Core Bracing Dynamics",
+                  duration: "50 min",
+                  content: "The thoracic spine is designed for rotation and extension, while the lumbar spine demands stiffness. Desk posture stiffens the thoracic spine into kyphosis, forcing the neck and lower back into excessive motion.\n\nEffective thoracic mobilization uses foam roller extensions (anchoring the ribs down), quadruped thread-the-needles, and side-lying open books.\n\nOnce thoracic mobility is restored, core stability must be built. The core is an anatomical cylinder: diaphragm at top, pelvic floor at bottom, transverse abdominis wrapped around, and multifidus behind. Dr. Stuart McGill's Big 3 (Modified Curl-Up, Side Plank, Bird Dog) builds 360-degree muscular endurance without spinal flexion.",
+                  keyPoints: [
+                    "Thoracic extension allows proper shoulder overhead position without lumbar hyperextension",
+                    "Diaphragmatic breathing generates intra-abdominal pressure (IAP) to protect the spine",
+                    "The core is primarily an anti-movement stabilizer (anti-flexion, anti-extension, anti-rotation)",
+                    "McGill's Big 3 builds endurance in spinal stabilizers with minimal joint shear stress"
+                  ],
+                  practiceTask: "Coach a client through McGill's Big 3 with zero compensatory pelvic rotation or spinal flexion. Emphasize breathing while maintaining isometric core tension.",
+                  reflectionQuestion: "Why are sit-ups and spinal flexion crunches poor choices for clients with lower back sensitivity?"
+                },
+                {
+                  id: "ce-2-3",
+                  title: "Scapulothoracic Stability & Rotator Cuff Centration",
+                  duration: "55 min",
+                  content: "The shoulder joint sacrifices bony stability for maximal mobility, making muscular centration vital. The rotator cuff (supraspinatus, infraspinatus, teres minor, subscapularis) acts as dynamic ligaments, pulling the humeral head snugly into the shallow glenoid fossa.\n\nThe scapula acts as the moving base of support. If the serratus anterior and lower trapezius are dormant, the scapula wings or anteriorly tilts, causing subacromial impingement during pressing.\n\nCorrective protocols incorporate prone Y-T-W raises, face pulls with external rotation, and serratus wall slides to groove scapulothoracic upward rotation and rotator cuff integrity.",
+                  keyPoints: [
+                    "Rotator cuff muscles compress and centrate the humeral head in the glenoid fossa",
+                    "Serratus anterior upwardly rotates the scapula and glues it against the ribcage",
+                    "Face pulls and band pull-aparts counteract habitual rounded-shoulder postures",
+                    "Stable scapulae provide the foundation for pain-free heavy pressing"
+                  ],
+                  practiceTask: "Assess scapular rhythm during a wall slide. Look for symmetry, winging of the medial border, and shrugging of the upper traps. Prescribe 2 corrective drills.",
+                  reflectionQuestion: "How does a lack of thoracic extension impair healthy scapular upward rotation?"
+                }
+              ]
+            },
+            {
+              id: "ce-3",
+              title: "Corrective Exercise Programming & Prehab",
+              description: "Translating screening data into structured warmups and recovery protocols.",
+              lessons: [
+                {
+                  id: "ce-3-1",
+                  title: "The 4-Phase Continuum: Inhibit, Lengthen, Activate, Integrate",
+                  duration: "55 min",
+                  content: "The NASM Corrective Exercise Continuum is a proven 4-stage systematic process for correcting neuromuscular imbalances:\n\n1. Inhibit: Self-myofascial release (foam rolling, massage ball) reduces overactive neural drive to hypertonic muscles for 30-90 seconds.\n2. Lengthen: Static or neuromuscular stretching increases tissue extensibility and resets muscle spindle sensitivity.\n3. Activate: Isolated strengthening exercises (e.g. banded clamshells, chin tucks) re-awaken dormant motor units.\n4. Integrate: Multi-joint functional movements (e.g. squat to press, single-leg deadlift) reteach the central nervous system to coordinate the corrected motor patterns under load.",
+                  keyPoints: [
+                    "Inhibit relaxes hyperactive motor units via autogenic inhibition",
+                    "Lengthen resets resting muscle sarcomere length without losing power",
+                    "Activate targets isolated dormant stabilizers before compound work",
+                    "Integrate encodes the new neuromuscular pattern into whole-body movement"
+                  ],
+                  practiceTask: "Build a complete 4-phase corrective protocol for a client exhibiting pronounced knee valgus during squatting.",
+                  reflectionQuestion: "Why will skipping the Integrate step cause the client to revert to old movement habits as soon as they lift heavy?"
+                },
+                {
+                  id: "ce-3-2",
+                  title: "Prehab Protocols for Lower Back, Knees & Shoulders",
+                  duration: "50 min",
+                  content: "Prehabilitation is the proactive strengthening and conditioning of vulnerable tissues before injury occurs. The three most common areas of breakdown in training are the lumbar spine, patellofemoral joint, and shoulder girdle.\n\nLower back prehab centers on glute max activation, hip mobility, and anti-extension core endurance. Knee prehab focuses on VMO (vastus medialis) firing, terminal knee extensions (TKEs), and hip abductor strength to control femur rotation. Shoulder prehab utilizes rotator cuff external rotation, band distractions, and scapular pushups.\n\nPrehab should be enjoyable, time-efficient (5 to 10 minutes), and performed before every training session.",
+                  keyPoints: [
+                    "Prehab addresses individual weak links before heavy training stressors are applied",
+                    "Glute strength and ankle mobility protect the knee joint from shear stress",
+                    "Rotator cuff prehab prevents subacromial bursitis and impingement",
+                    "Consistency in prehab yields compounded resilience over years of training"
+                  ],
+                  practiceTask: "Design a 7-minute prehab routine for an overhead athlete or swimmer with previous history of shoulder impingement.",
+                  reflectionQuestion: "How do you explain the value of prehab exercises to a client who only wants to lift heavy?"
+                },
+                {
+                  id: "ce-3-3",
+                  title: "Seamless Integration: From Correctives to Main Workouts",
+                  duration: "50 min",
+                  content: "A major mistake novice personal trainers make is treating corrective exercise as a separate, boring 45-minute rehab session. Clients want to train, sweat, and build strength.\n\nThe elite method is seamless integration: use corrective exercises as targeted warmup primers, and as active rest fillers between heavy working sets (e.g., performing band pull-aparts or ankle mobilizations while resting between deadlift sets).\n\nThis optimizes gym time, keeps the heart rate elevated, and reinforces good movement patterns right when the nervous system is primed.",
+                  keyPoints: [
+                    "Correctives should be embedded directly into dynamic warmups and inter-set rest",
+                    "Active rest pairings (e.g., bench press paired with thoracic rotations) maximize session efficiency",
+                    "Clients maintain high motivation when corrective work supports their performance goals",
+                    "Progression means gradually reducing corrective volume as movement quality becomes automatic"
+                  ],
+                  practiceTask: "Take a standard 45-minute hypertrophy workout and integrate 3 corrective exercise fillers into the rest periods without adding extra session time.",
+                  reflectionQuestion: "How does weaving correctives into rest intervals enhance workout flow and client compliance?"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        id: "vance",
+        name: "Vance",
+        title: "Fitness Coaching Psychology & Client Transformation Mentor",
+        tagline: "The best workout plan is the one your client actually executes",
+        personality: "Empathetic, business-savvy, motivational. Vance focuses on the human side of personal training — behavioral psychology, client communication, nutrition coaching, and building a thriving coaching practice.",
+        avatar: "⚡",
+        initials: "VA",
+        envTheme: { bg: "#080b10", accent: "#f59e0b", mood: "empowering" },
+        voiceConfig: { pitch: 1.0, rate: 1.0, voiceHint: "male" },
+        specialties: ["Client Behavior Change", "Motivational Interviewing", "Nutritional Coaching", "Client Intake & Retention", "Fitness Business Strategy"],
+        greeting: "Hey there! I am Vance, your client transformation and fitness business mentor. The greatest technical knowledge in the world means nothing if you cannot inspire a client to show up on Monday morning or make peace with their nutrition. I will teach you how to listen deeply, overcome client resistance, navigate body composition plateaus, and build a flourishing personal training brand that changes lives and sustains your career. Let us make human transformation your life's work.",
+        encouragement: [
+          "That motivational interviewing question opened up your client's real why!",
+          "Your nutritional guidance strikes the perfect balance of science and sustainability.",
+          "Building client trust through empathy — that is why your retention will be extraordinary.",
+        ],
+        course: {
+          id: "vance-coaching",
+          title: "Client Transformation & Fitness Coaching Mastery",
+          overview: "Master the psychological tools of fitness coaching: motivational interviewing, habit architecture, client onboarding, nutrition guidance for body recomposition, and building a sustainable, high-income training practice.",
+          totalDuration: "28 hours",
+          learningDuration: "6–8 weeks",
+          difficulty: "Beginner",
+          modules: [
+            {
+              id: "fc-1",
+              title: "Behavioral Psychology & Habit Architecture",
+              description: "How clients change, adhere, and break through mental resistance.",
+              lessons: [
+                {
+                  id: "fc-1-1",
+                  title: "Stages of Change & The Habit Loop in Fitness",
+                  duration: "55 min",
+                  content: "The Prochaska Transtheoretical Model explains why clients fail when given advanced routines too early. People move through 5 stages of change: Precontemplation, Contemplation, Preparation, Action, and Maintenance.\n\nIf a client is in Contemplation (thinking about exercising but hesitant), handing them a 5-day brutal workout program will trigger overwhelm and dropout. You must meet the client where they are.\n\nHabits follow a 4-part neurological loop: Cue -> Craving -> Response -> Reward. Master coaches make the cues obvious, the responses easy, and the rewards immediate and emotionally satisfying.",
+                  keyPoints: [
+                    "Matching training demands to the client's current Stage of Change prevents early dropout",
+                    "Habit stacking attaches a new fitness behavior to an existing automatic daily habit",
+                    "Reducing friction in the first 2 minutes of a workout guarantees consistency",
+                    "Intrinsic motivation compounds over time, whereas guilt and fear burn out within weeks"
+                  ],
+                  practiceTask: "Interview a partner about a health habit they have struggled to adopt. Determine their current Stage of Change and design a micro-step for the next 7 days.",
+                  reflectionQuestion: "Why does relying on willpower alone almost always fail in long-term client habit formation?"
+                },
+                {
+                  id: "fc-1-2",
+                  title: "Motivational Interviewing: Eliciting Client Autonomy",
+                  duration: "60 min",
+                  content: "Telling clients what to do produces resistance. Asking clients powerful, open-ended questions helps them discover their own reasons for change. This is the essence of Motivational Interviewing (MI).\n\nKey MI skills follow the OARS framework:\n- Open-ended questions: 'What would having more energy allow you to do with your children?'\n- Affirmations: Recognizing client strengths, efforts, and past successes.\n- Reflective listening: Mirroring back feelings to ensure the client feels deeply understood.\n- Summarizing: Tying together client ambivalence and personal motivation.\n\nWhen clients voice their own arguments for change, adherence rates skyrocket.",
+                  keyPoints: [
+                    "The righting reflex (trying to fix a client with advice) breeds defensiveness",
+                    "OARS framework builds unconditional positive regard and client trust",
+                    "Change talk vs. sustain talk: guide the client toward articulating their own reasons to act",
+                    "Autonomy-supportive coaching fosters lifelong self-efficacy"
+                  ],
+                  practiceTask: "Role-play a client consultation where the client states they do not have time to exercise. Use only open-ended questions and reflective listening to guide them to a self-discovered solution.",
+                  reflectionQuestion: "How does shifting from an authoritarian instructor to a collaborative guide change your client relationship?"
+                },
+                {
+                  id: "fc-1-3",
+                  title: "Environmental Design & Overcoming Workout Resistance",
+                  duration: "50 min",
+                  content: "Environment is the invisible hand that shapes human behavior. Clients do not lack motivation; their living and working environments make poor choices frictionless and healthy choices difficult.\n\nCoaching environmental design means helping clients redesign their physical and digital spaces: setting gym clothes out the night before, pre-packing wholesome snacks, deleting distracting apps during workout windows, and scheduling workouts like non-negotiable executive meetings.\n\nWhen workout resistance arises (rainy days, stressful meetings), having a fallback 'Floor Workout' (a 15-minute bare minimum routine) preserves the identity of consistency.",
+                  keyPoints: [
+                    "Design environments that make healthy choices the path of least resistance",
+                    "The 'Never Miss Twice' rule keeps temporary slips from becoming permanent derailments",
+                    "A 15-minute floor routine preserves habit momentum when life chaos hits",
+                    "Social environments either pull clients forward or drag them back into old patterns"
+                  ],
+                  practiceTask: "Audit your client's daily routine. Identify three environmental friction points that derail their workouts or nutrition and implement physical environment redesigns.",
+                  reflectionQuestion: "Why is maintaining a 15-minute bare-minimum workout better than skipping a scheduled session entirely?"
+                }
+              ]
+            },
+            {
+              id: "fc-2",
+              title: "Evidence-Based Nutrition & Body Composition",
+              description: "Guiding clients on energy balance, macronutrients, and metabolic adaptation.",
+              lessons: [
+                {
+                  id: "fc-2-1",
+                  title: "Energy Balance, BMR & Calculating Accurate TDEE",
+                  duration: "55 min",
+                  content: "Energy balance is governed by the first law of thermodynamics: energy cannot be created or destroyed, only converted. Total Daily Energy Expenditure (TDEE) consists of:\n\n1. Basal Metabolic Rate (BMR): ~60-70% of daily energy expended at rest.\n2. Non-Exercise Activity Thermogenesis (NEAT): ~15-30% of energy burned through daily movement, fidgeting, and walking.\n3. Thermic Effect of Food (TEF): ~8-10% of energy required to digest nutrients (highest for protein at 20-30%).\n4. Exercise Activity Thermogenesis (EAT): ~5-10% burned during intentional workouts.\n\nMost clients overestimate EAT and underestimate caloric intake. Trainers must calculate realistic deficits (300-500 kcal/day) that preserve lean mass while ensuring fat loss.",
+                  keyPoints: [
+                    "TDEE is composed of BMR, NEAT, TEF, and EAT",
+                    "NEAT is the most variable and controllable component of energy expenditure",
+                    "Moderate calorie deficits (10-20% below TDEE) safeguard metabolic health and muscle tissue",
+                    "Tracking body weight trends over 14-day rolling averages smooths out water fluctuations"
+                  ],
+                  practiceTask: "Calculate BMR and TDEE for a 35-year-old, 180 lb client with 25% body fat using the Katch-McArdle formula. Prescribe target daily calorie intake for sustainable fat loss.",
+                  reflectionQuestion: "Why is prescribing an aggressive 1,000-calorie deficit counterproductive for long-term body composition?"
+                },
+                {
+                  id: "fc-2-2",
+                  title: "Protein Targets, Macronutrient Splits & Nutrient Timing",
+                  duration: "55 min",
+                  content: "Protein is the foundational macronutrient for body recomposition. It provides essential amino acids for muscle protein synthesis (MPS) via the leucine trigger and boasts the highest satiety score and thermic effect.\n\nEvidence-based recommendations indicate 1.6 to 2.2 grams of protein per kilogram of total body weight (or 0.8 to 1.0g per pound) to maximize muscle retention during a caloric deficit.\n\nCarbohydrates fuel high-intensity glycolytic lifting sessions and replenish muscle glycogen, while dietary fats (minimum 0.6g/kg) are critical for endocrine hormone synthesis and lipid-soluble vitamin absorption.",
+                  keyPoints: [
+                    "1.6 to 2.2g/kg protein maximizes muscle protein synthesis and satiety",
+                    "Distributing protein across 3 to 5 meals (each with 3g leucine) optimizes 24-hour MPS",
+                    "Carbohydrates are protein-sparing and optimize training intensity and volume tolerance",
+                    "Dietary fats are essential for testosterone, estrogen, and cellular membrane integrity"
+                  ],
+                  practiceTask: "Construct a daily macronutrient distribution for an athlete weighing 75kg aiming for lean muscle gain with 300 kcal surplus. Specify grams of protein, carbohydrate, and fat.",
+                  reflectionQuestion: "When does nutrient timing around the workout window actually matter, and when is daily total intake the only priority?"
+                },
+                {
+                  id: "fc-2-3",
+                  title: "Managing Fat Loss Plateaus & Reverse Dieting",
+                  duration: "50 min",
+                  content: "During sustained caloric deficits, the body initiates adaptive thermogenesis: thyroid hormones (T3), leptin, and testosterone decrease while ghrelin (hunger hormone) increases. Simultaneously, spontaneous NEAT drops as the body conserves energy.\n\nWhen a client hits a weight loss plateau, trainers must distinguish between true metabolic adaptation and behavioral drift (untracked snacking, weekend overeating).\n\nIf true metabolic slowing has occurred, implementing a 1 to 2-week diet break at maintenance calories, or initiating a structured reverse diet (gradually increasing calories by 50-100 kcal/week) restores metabolic rate, hormones, and training performance.",
+                  keyPoints: [
+                    "Adaptive thermogenesis causes energy expenditure to decrease beyond what weight loss alone predicts",
+                    "Unconscious decreases in NEAT are often the primary cause of stalled weight loss",
+                    "Diet breaks at maintenance calories relieve psychological fatigue and reset hunger hormones",
+                    "Reverse dieting gradually restores caloric intake while minimizing unwanted fat regain"
+                  ],
+                  practiceTask: "Formulate a strategy for a client who has been in a 500-calorie deficit for 16 weeks and whose weight loss has stalled for 3 consecutive weeks despite strict adherence.",
+                  reflectionQuestion: "How do you navigate the emotional distress clients experience when stepping on the scale during a water-retention spike?"
+                }
+              ]
+            },
+            {
+              id: "fc-3",
+              title: "The Business & Career of Personal Training",
+              description: "Client onboarding, retention systems, and building a sustainable coaching career.",
+              lessons: [
+                {
+                  id: "fc-3-1",
+                  title: "Client Intake, PAR-Q+ Screening & Expectation Alignment",
+                  duration: "55 min",
+                  content: "The initial consultation sets the trajectory for the entire coaching relationship. A professional intake protocol includes:\n\n1. Health Screening: PAR-Q+ (Physical Activity Readiness Questionnaire), medical clearance if indicated, previous injury history, and medication review.\n2. Lifestyle Audit: Occupation, sleep duration, daily stress levels, nutrition habits, and previous exercise experiences.\n3. SMART Goal Formulation: Transforming vague wishes ('I want to get fit') into Specific, Measurable, Achievable, Relevant, and Time-bound objectives.\n\nClarifying mutual expectations (cancellation policy, communication channels, client accountability) establishes clear professional boundaries from day one.",
+                  keyPoints: [
+                    "PAR-Q+ screening protects client safety and shields the trainer from legal liability",
+                    "Uncovering past negative fitness experiences helps you avoid repeating previous trainers' mistakes",
+                    "SMART goals provide objective benchmarks to celebrate progress",
+                    "Transparent communication policies and boundary setting prevent trainer burnout"
+                  ],
+                  practiceTask: "Draft a comprehensive new client onboarding packet including PAR-Q+, liability waiver, lifestyle questionnaire, and service agreement.",
+                  reflectionQuestion: "Why is asking 'What has stopped you from achieving your goals in the past?' the most revealing intake question?"
+                },
+                {
+                  id: "fc-3-2",
+                  title: "Client Retention, Milestone Celebrations & Community",
+                  duration: "50 min",
+                  content: "It costs 5 to 7 times more to acquire a new personal training client than to retain an existing one. High-earning trainers build retention into the fabric of their coaching.\n\nRetention is driven by feeling seen, valued, and continuously challenged. Implement non-scale victories (NSVs): celebrating that a client carried groceries without back pain, improved their resting heart rate, or achieved their first full pull-up.\n\nConduct formal 90-day progress reviews with visual comparisons, strength metric graphs, and re-evaluated goals to ensure the client always has a clear horizon ahead of them.",
+                  keyPoints: [
+                    "Client retention is the single greatest determinant of personal trainer income stability",
+                    "Non-scale victories (energy, mobility, sleep, mood) reinforce value beyond the scale",
+                    "Formal 90-day reviews prevent client complacency and demonstrate ongoing return on investment",
+                    "Building client camaraderie through challenges and workshops fosters a community culture"
+                  ],
+                  practiceTask: "Create a 90-day progress review template featuring qualitative questions, strength milestones, body composition shifts, and new goal horizons.",
+                  reflectionQuestion: "How does celebrating small daily micro-wins prevent clients from giving up when long-term goals take months to achieve?"
+                },
+                {
+                  id: "fc-3-3",
+                  title: "Hybrid, In-Person & Remote Online Training Business Models",
+                  duration: "60 min",
+                  content: "The modern fitness landscape has evolved far beyond trading hours for dollars on the gym floor. A resilient personal training business utilizes a diversified model:\n\n1. In-Person 1-on-1: Premium pricing, high touch, immediate tactile form correction.\n2. Semi-Private / Small Group: 2 to 4 clients sharing a coaching hour; higher hourly revenue for the coach and lower price point for clients.\n3. Hybrid Coaching: 1 in-person session weekly paired with 2-3 programmed sessions via mobile coaching software with video feedback.\n4. Remote Online Coaching: Scalable, location-independent, focused on asynchronous video form analysis, programming, and nutrition guidance.\n\nMastering digital coaching tools and ethical marketing allows trainers to build sustainable, 6-figure businesses with healthy work-life balance.",
+                  keyPoints: [
+                    "Trading hours for dollars creates a hard revenue ceiling and risks physical burnout",
+                    "Hybrid coaching provides the perfect bridge of in-person connection and scalable software tracking",
+                    "Asynchronous video form analysis delivers exceptional coaching without scheduling conflicts",
+                    "Ethical marketing focuses on educational content and client case studies over hype"
+                  ],
+                  practiceTask: "Map out the pricing tiers and service deliverable breakdown for a hybrid personal training offering (1 weekly in-person session + full app-based programming).",
+                  reflectionQuestion: "How can adopting a hybrid training model dramatically reduce trainer burnout while serving more clients effectively?"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
   },
 ];

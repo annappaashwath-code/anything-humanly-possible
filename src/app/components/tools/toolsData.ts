@@ -6,6 +6,7 @@ import {
   PenTool,
   Flower2,
   Brain,
+  Dumbbell,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -812,6 +813,95 @@ export const skillCategories: SkillCategory[] = [
           { id: "m60", label: "Share your story", description: "Help others by sharing your journey" },
         ],
         tags: ["Mindset", "EQ", "Resilience", "Meditation"],
+      },
+    ],
+  },
+  {
+    id: "personal-training",
+    slug: "personal-training",
+    label: "Personal Training",
+    tagline: "Master human movement, strength & coaching",
+    description:
+      "From biomechanics and resistance training to movement screening, nutrition, and client coaching psychology — build the skills of a master personal trainer.",
+    image:
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaXRuZXNzJTIwcGVyc29uYWwlMjB0cmFpbmluZyUyMGd5bSUyMHdvcmtvdXR8ZW58MXx8fHwxNzcyMzQyMzk4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    icon: Dumbbell,
+    color: "#ea580c",
+    lightBg: "bg-orange-50",
+    cards: [
+      {
+        id: "pt-strength",
+        title: "Strength & Conditioning Coaching",
+        subtitle: "Biomechanics, compound lifts & program design",
+        description:
+          "Master barbell mechanics, progressive overload, energy systems, and periodized training design for all fitness levels.",
+        longDescription:
+          "Personal training begins with understanding how the human body moves against resistance. You will master functional anatomy, force vectors, the squat/hinge/push/pull kinetic chains, and evidence-based periodization strategies to build resilient, powerful athletes and everyday fitness enthusiasts.",
+        icon: "🏋️",
+        avgCompletionRate: 84,
+        topSkillsGained: ["Biomechanics", "Periodization", "Compound Lifting", "Movement Assessment", "Program Design"],
+        earningPotential: "$60K–$120K",
+        courses: [
+          { id: "co43", title: "NSCA-CPT Complete Preparation", provider: "NSCA", url: "#", duration: "120 hrs", difficulty: "Intermediate", rating: 4.9, ratingCount: 16400, completionRate: 88, free: false, topSkills: ["Exercise Technique", "Program Design", "Client Assessment"], earningPotential: "$65K–$115K" },
+          { id: "co44", title: "Biomechanics of Resistance Training", provider: "Barbell Medicine", url: "#", duration: "45 hrs", difficulty: "Intermediate", rating: 4.8, ratingCount: 9200, completionRate: 82, free: false, topSkills: ["Force Vectors", "Spine Mechanics", "Joint Levers"] },
+          { id: "co45", title: "Foundations of Human Movement", provider: "OpenLearn", url: "#", duration: "25 hrs", difficulty: "Beginner", rating: 4.7, ratingCount: 18500, completionRate: 91, free: true, topSkills: ["Anatomy", "Kinetic Chains", "Physiology"] },
+        ],
+        deepResources: [
+          { id: "dr33", title: "Strength & Conditioning Research Digest", type: "whitepaper", provider: "JSCR Journal", url: "#", readTime: "30 min", free: true },
+          { id: "dr34", title: "Iron Culture & Science Podcast", type: "podcast", provider: "Eric Helms & Omar Isuf", url: "#", episodes: 250, free: true },
+        ],
+        resources: [
+          { id: "r91", title: "ExRx.net Exercise Prescription Library", url: "#", type: "tool", provider: "ExRx", free: true },
+          { id: "r92", title: "Starting Strength: Basic Barbell Training", url: "#", type: "book", provider: "Mark Rippetoe", free: false },
+          { id: "r93", title: "Science and Development of Muscle Hypertrophy", url: "#", type: "book", provider: "Brad Schoenfeld", free: false },
+        ],
+        projects: [
+          { id: "p46", title: "12-Week Periodized Client Program", difficulty: "Intermediate", description: "Design an evidence-based 12-week undulating periodization program for an intermediate client aiming for hypertrophy and strength.", skills: ["Program Design", "Volume/Intensity", "Deloads"] },
+          { id: "p47", title: "Kinetic Video Form Analysis", difficulty: "Advanced", description: "Perform a frame-by-frame biomechanical critique of a client's squat, bench press, and deadlift, writing corrective cues.", skills: ["Video Analysis", "Cueing", "Form Correction"] },
+        ],
+        milestones: [
+          { id: "m61", label: "Master functional anatomy & planes of motion", description: "Understand sagittal, frontal, and transverse actions of prime movers and stabilizers" },
+          { id: "m62", label: "Coach the 5 foundational movement patterns", description: "Demonstrate and cue squat, hinge, push, pull, and loaded carry with zero form breakdown" },
+          { id: "m63", label: "Write a customized 8-week training split", description: "Calculate volume thresholds, set RPE/RIR targets, and prescribe deload weeks" },
+          { id: "m64", label: "Onboard your first real training client", description: "Perform PAR-Q+ health screening, baseline fitness testing, and first guided session" },
+        ],
+        tags: ["Strength", "Biomechanics", "Periodization", "Lifting", "Anatomy"],
+      },
+      {
+        id: "pt-corrective",
+        title: "Corrective Exercise & Client Psychology",
+        subtitle: "Movement screening, mobility & habit adherence",
+        description:
+          "Diagnose movement compensations, restore pain-free joint range of motion, and use behavioral psychology to help clients build lifelong fitness habits.",
+        longDescription:
+          "Great personal trainers don't just count reps; they restore functional movement and coach behavioral transformation. You will learn the NASM Corrective Exercise Continuum, joint-by-joint screening, and motivational interviewing to turn hesitant beginners into confident, lifelong athletes.",
+        icon: "🧘",
+        avgCompletionRate: 86,
+        topSkillsGained: ["Corrective Exercise", "FMS Screening", "Mobility Protocols", "Motivational Interviewing", "Client Adherence"],
+        earningPotential: "$55K–$110K",
+        courses: [
+          { id: "co46", title: "NASM Corrective Exercise Specialist (CES)", provider: "NASM", url: "#", duration: "80 hrs", difficulty: "Intermediate", rating: 4.8, ratingCount: 14200, completionRate: 85, free: false, topSkills: ["Movement Assessment", "Inhibit/Lengthen", "Activation"] },
+        ],
+        deepResources: [
+          { id: "dr35", title: "Joint-by-Joint Approach to Human Movement", type: "article", provider: "Michael Boyle & Gray Cook", url: "#", readTime: "15 min", free: true },
+          { id: "dr36", title: "The Psychology of Habit Formation in Fitness", type: "whitepaper", provider: "European Journal of Social Psychology", url: "#", readTime: "22 min", free: true },
+        ],
+        resources: [
+          { id: "r94", title: "Functional Movement Systems (FMS)", url: "#", type: "tool", provider: "FMS", free: false },
+          { id: "r95", title: "Becoming a Supple Leopard", url: "#", type: "book", provider: "Kelly Starrett", free: false },
+          { id: "r96", title: "Motivational Interviewing in Nutrition & Fitness", url: "#", type: "book", provider: "Dawn Clifford", free: false },
+        ],
+        projects: [
+          { id: "p48", title: "Complete Overhead Squat Assessment Case Study", difficulty: "Intermediate", description: "Record and evaluate an overhead squat, identify 3 kinetic chain compensations, and prescribe an 8-week corrective intervention.", skills: ["Assessment", "Mobility", "Activation"] },
+          { id: "p49", title: "Client Habit Transformation Blueprint", difficulty: "Beginner", description: "Design a 30-day progressive habit architecture for a sedentary client addressing sleep, daily steps, and workout adherence.", skills: ["Behavior Change", "Goal Setting", "Tracking"] },
+        ],
+        milestones: [
+          { id: "m65", label: "Perform full FMS & Overhead Squat screen", description: "Identify knee valgus, anterior pelvic tilt, and thoracic kyphosis compensations" },
+          { id: "m66", label: "Master the 4-phase corrective continuum", description: "Apply inhibit (SMR), lengthen (stretch), activate (isolate), and integrate (compound)" },
+          { id: "m67", label: "Conduct an intake motivational interview", description: "Uncover intrinsic motivators and establish SMART fitness goals with a new client" },
+          { id: "m68", label: "Design a long-term retention roadmap", description: "Structure 90-day progress reviews, milestone check-ins, and community engagement" },
+        ],
+        tags: ["Corrective Exercise", "FMS", "Mobility", "Psychology", "Client Success"],
       },
     ],
   },

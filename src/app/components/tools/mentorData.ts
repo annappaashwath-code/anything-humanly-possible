@@ -1349,6 +1349,7 @@ export const mentorCategories: MentorCategory[] = [
 
   // ── Tier 4: Specialized & emerging domains ──
   _bySlug("health"),              // Health & Longevity
+  _bySlug("personal-training"),   // Personal Training & Biomechanics
   _bySlug("climate"),             // Climate & Sustainability
   _bySlug("agriculture"),         // Future of Agriculture
 ];

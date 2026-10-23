@@ -872,6 +872,147 @@ export const courseDetails: Record<string, CourseDetail> = {
     categoryWisdom: getWisdom("wellness", 2),
     communityNote: "EQ is the multiplier that makes every other skill more effective. Technical expertise gets you in the door — emotional intelligence determines how far you go.",
   },
+  co43: {
+    id: "co43",
+    overview: "The National Strength and Conditioning Association Certified Personal Trainer (NSCA-CPT) certification is the gold standard for fitness professionals worldwide. This course covers functional anatomy, biomechanics, exercise technique, client consultation, program design, and emergency protocols, giving you the knowledge and clinical judgment to train diverse client populations safely and effectively.",
+    learningObjectives: [
+      "Master functional anatomy, kinetic chains, and joint levers",
+      "Conduct comprehensive client consultations, health history, and fitness assessments",
+      "Demonstrate and coach proper biomechanical form on compound and isolation lifts",
+      "Design periodized strength and conditioning programs tailored to client goals",
+      "Apply exercise physiology to optimize energy system development and recovery",
+      "Implement client safety guidelines, spotter techniques, and facility risk management",
+    ],
+    prerequisites: ["High school diploma or equivalent", "CPR/AED certification recommended", "Basic interest in human biology and fitness"],
+    modules: [
+      {
+        id: "m43-1",
+        title: "Anatomy, Biomechanics & Exercise Physiology",
+        lessons: [
+          { id: "l319", title: "Musculoskeletal anatomy and planes of motion", duration: "75 min" },
+          { id: "l320", title: "Bioenergetics and cardiovascular adaptations", duration: "60 min" },
+          { id: "l321", title: "Neuromuscular coordination and force production", duration: "60 min" },
+          { id: "l322", title: "Biomechanics of lifting and resistance curves", duration: "75 min" },
+        ],
+      },
+      {
+        id: "m43-2",
+        title: "Client Consultation & Fitness Assessment",
+        lessons: [
+          { id: "l323", title: "PAR-Q+ screening and medical clearance protocols", duration: "45 min" },
+          { id: "l324", title: "Vital signs and body composition assessment", duration: "60 min" },
+          { id: "l325", title: "Cardiorespiratory and muscular endurance testing", duration: "60 min" },
+          { id: "l326", title: "Movement screening and flexibility evaluations", duration: "60 min" },
+        ],
+      },
+      {
+        id: "m43-3",
+        title: "Program Design & Training Techniques",
+        lessons: [
+          { id: "l327", title: "Free weight and machine resistance technique", duration: "90 min" },
+          { id: "l328", title: "Spotting techniques and client safety protocols", duration: "45 min" },
+          { id: "l329", title: "Periodization models and volume-intensity planning", duration: "75 min" },
+          { id: "l330", title: "Training special populations: youth, seniors, and prenatal", duration: "60 min" },
+        ],
+      },
+    ],
+    videoPlaceholder: {
+      title: "The Art of Barbell Coaching",
+      description: "Step-by-step visual breakdowns of setup, cueing, common faults, and instant form corrections for the squat, bench press, deadlift, and overhead press.",
+    },
+    realWorldExamples: [
+      {
+        title: "How elite trainers program for client longevity",
+        description: "Instead of grinding clients into exhaustion with random high-intensity workouts, top NSCA trainers use undulating periodization and movement screens to build strength without joint inflammation.",
+        lesson: "Progressive overload combined with movement quality creates lifelong client adherence and zero injuries.",
+      },
+      {
+        title: "From gym floor trainer to boutique fitness director",
+        description: "A certified trainer scaled their practice by introducing systematic movement assessments during client intake, increasing client retention from 3 months to over 2 years.",
+        lesson: "Objective assessment data builds immediate credibility and trust with clients.",
+      },
+    ],
+    exercises: [
+      {
+        id: "ex53",
+        title: "Client Intake & Program Design Case Study",
+        description: "Review a 42-year-old desk worker's health questionnaire. Design their first 4-week strength protocol balancing postural correction with progressive resistance.",
+        type: "analysis",
+      },
+      {
+        id: "ex54",
+        title: "Biomechanical Form Critique",
+        description: "Analyze three video clips of clients deadlifting. Identify lumbar flexion, early hip shoot, and knee collapse. Write exact verbal cues to correct each error.",
+        type: "analysis",
+      },
+    ],
+    categoryWisdom: {
+      quote: "Strength is the mother quality of all physical attributes. When strength increases, every other physical capacity improves with it.",
+      author: "Mark Rippetoe",
+      role: "Strength Coach & Author",
+    },
+    communityNote: "The NSCA-CPT credential is recognized across professional gyms, collegiate athletic departments, and private coaching facilities globally.",
+  },
+  co46: {
+    id: "co46",
+    overview: "The NASM Corrective Exercise Specialist (CES) curriculum provides the clinical assessment and programming skills necessary to address muscle imbalances, faulty movement patterns, and joint limitations before they become injuries. Learn the NASM 4-Phase Corrective Exercise Continuum (Inhibit, Lengthen, Activate, Integrate) to keep clients moving pain-free.",
+    learningObjectives: [
+      "Conduct static postural, dynamic movement, and range of motion assessments",
+      "Identify common postural distortion syndromes (Upper and Lower Crossed, Pronation Distortion)",
+      "Apply self-myofascial release (Inhibit) and neuromuscular stretching (Lengthen)",
+      "Prescribe isolated strengthening drills (Activate) for dormant stabilizers",
+      "Program multi-joint integrated movement patterns (Integrate) to retrain neuromuscular coordination",
+      "Safely transition corrective protocols into full-body strength and conditioning workouts",
+    ],
+    prerequisites: ["Personal training certification or fitness coaching experience recommended", "Basic anatomy knowledge"],
+    modules: [
+      {
+        id: "m46-1",
+        title: "Movement Assessments & Postural Analysis",
+        lessons: [
+          { id: "l331", title: "The kinetic chain and cumulative injury cycle", duration: "60 min" },
+          { id: "l332", title: "Static postural observation and spinal alignments", duration: "60 min" },
+          { id: "l333", title: "Overhead squat assessment diagnostic masterclass", duration: "75 min" },
+          { id: "l334", title: "Single-leg squat and transitional movement tests", duration: "60 min" },
+        ],
+      },
+      {
+        id: "m46-2",
+        title: "The Corrective Exercise Continuum",
+        lessons: [
+          { id: "l335", title: "Phase 1: Inhibit — Self-myofascial release science", duration: "45 min" },
+          { id: "l336", title: "Phase 2: Lengthen — Static and neuromuscular stretching", duration: "60 min" },
+          { id: "l337", title: "Phase 3: Activate — Positional isometrics and isolated strengthening", duration: "60 min" },
+          { id: "l338", title: "Phase 4: Integrate — Multi-planar dynamic movement integration", duration: "60 min" },
+        ],
+      },
+    ],
+    videoPlaceholder: {
+      title: "Reading the Kinetic Chain",
+      description: "A clinician's view of an Overhead Squat screen: spotting foot pronation, knee valgus, asymmetrical weight shift, and arms falling forward in real time.",
+    },
+    realWorldExamples: [
+      {
+        title: "Eliminating runner's knee through hip stabilization",
+        description: "A marathoner plagued by chronic patellofemoral pain was diagnosed with hip abductor weakness and foot overpronation. An 8-week corrective intervention of foam rolling, hip activation, and single-leg integration resolved pain without missing race season.",
+        lesson: "The site of pain is rarely the cause of pain. Look up and down the kinetic chain.",
+      },
+    ],
+    exercises: [
+      {
+        id: "ex55",
+        title: "Corrective Protocol Formulation",
+        description: "A client exhibits arms falling forward and excessive forward lean during an Overhead Squat screen. Prescribe an exact 4-phase corrective routine (Inhibit, Lengthen, Activate, Integrate).",
+        type: "analysis",
+      },
+    ],
+    categoryWisdom: {
+      quote: "First move well, then move often. Loading dysfunction only cements dysfunction.",
+      author: "Gray Cook",
+      role: "Physical Therapist & Co-Founder of FMS",
+    },
+    communityNote: "Corrective exercise skills bridge the gap between physical therapy and fitness coaching, allowing you to work with rehabilitation referrals.",
+  },
 };
 
 // Note: findCourseContext is implemented directly in CoursePage.tsx
