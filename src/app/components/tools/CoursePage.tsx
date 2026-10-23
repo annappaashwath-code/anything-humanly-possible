@@ -28,6 +28,7 @@ import { Footer } from "../Footer";
 import { skillCategories, type Course } from "./toolsData";
 import { courseDetails, type CourseDetail, type CourseModule } from "./courseDetailData";
 import { MentorGuide } from "./MentorGuide";
+import { logActivity } from "../dashboard/dashboardStore";
 
 /* ────────────────────────────────────────────
    LocalStorage helpers
@@ -294,25 +295,44 @@ export function CoursePage() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
+  // Find data
+  const ctx = courseId ? findCourse(courseId) : null;
+  const detail = courseId ? courseDetails[courseId] : null;
+
   const handleEnroll = useCallback(() => {
     if (!courseId) return;
     const e = getEnrollment();
     e[courseId] = true;
     saveEnrollment(e);
     setEnrolled(true);
-  }, [courseId]);
+    if (ctx) {
+      logActivity({
+        type: "session_started",
+        title: `Enrolled: ${ctx.course.title}`,
+        detail: ctx.categoryLabel,
+      }).catch(() => {});
+    }
+  }, [courseId, ctx]);
 
   const toggleLesson = useCallback((lessonId: string) => {
     setLessonProgress((prev) => {
-      const next = { ...prev, [lessonId]: !prev[lessonId] };
+      const willBeComplete = !prev[lessonId];
+      const next = { ...prev, [lessonId]: willBeComplete };
       saveModuleProgress(next);
+
+      if (willBeComplete && detail) {
+        const lesson = detail.modules.flatMap((m) => m.lessons).find((l) => l.id === lessonId);
+        if (lesson) {
+          logActivity({
+            type: "lesson_completed",
+            title: `Completed: ${lesson.title}`,
+            detail: `${ctx?.course.title ?? "Course"} — ${lesson.duration}`,
+          }).catch(() => {});
+        }
+      }
       return next;
     });
-  }, []);
-
-  // Find data
-  const ctx = courseId ? findCourse(courseId) : null;
-  const detail = courseId ? courseDetails[courseId] : null;
+  }, [detail, ctx]);
 
   if (!ctx || !detail) {
     return (

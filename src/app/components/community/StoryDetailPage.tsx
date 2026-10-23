@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { motion, useInView } from "motion/react";
 import { ArrowLeft, Heart, MessageCircle, Clock, MapPin, ChevronLeft } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { communityPosts, type CommunityPost } from "./communityData";
+import { toggleLikeCommunityStory } from "../../lib/communityService";
 
 // ─── Avatar ──────────────────────────────────────────────────
 
@@ -39,20 +40,32 @@ export function StoryDetailPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Try stored user stories first, then fall back to communityPosts
-  let post: CommunityPost | undefined = communityPosts.find((p) => p.id === storyId);
-
-  if (!post) {
-    try {
-      const stored = localStorage.getItem("ahp_community_stories_cache") || localStorage.getItem("community_user_stories");
-      if (stored) {
-        const userStories: CommunityPost[] = JSON.parse(stored);
-        post = userStories.find((p) => p.id === storyId);
-      }
-    } catch {
-      // ignore
+  // Try stored stories cache first (which includes updated likes and user stories), then fall back to communityPosts
+  let initialPost: CommunityPost | undefined;
+  try {
+    const stored = localStorage.getItem("ahp_community_stories_cache") || localStorage.getItem("community_user_stories");
+    if (stored) {
+      const stories: CommunityPost[] = JSON.parse(stored);
+      initialPost = stories.find((p) => p.id === storyId);
     }
+  } catch {
+    /* ignore */
   }
+
+  if (!initialPost) {
+    initialPost = communityPosts.find((p) => p.id === storyId);
+  }
+
+  const post = initialPost;
+  const [likes, setLikes] = useState<number>(post?.likes ?? 0);
+  const [liked, setLiked] = useState(false);
+
+  const handleLike = async () => {
+    if (liked || !post) return;
+    setLiked(true);
+    setLikes((prev) => prev + 1);
+    await toggleLikeCommunityStory(post.id);
+  };
 
   const contentRef = useRef<HTMLDivElement>(null);
   const contentInView = useInView(contentRef, { once: true, margin: "-40px" });
@@ -215,12 +228,19 @@ export function StoryDetailPage() {
           style={{ borderTop: "1px solid rgba(0,0,0,0.06)", borderBottom: "1px solid rgba(0,0,0,0.06)" }}
         >
           <div className="flex items-center gap-5" style={{ color: "rgba(0,0,0,0.35)" }}>
-            <span className="flex items-center gap-1.5">
-              <Heart size={16} />
-              <span style={{ fontSize: "0.875rem", fontWeight: 600 }}>
-                {post.likes}
+            <button
+              onClick={handleLike}
+              className="flex items-center gap-1.5 hover:text-rose-500 transition-colors cursor-pointer group"
+              title={liked ? "Liked!" : "Like this story"}
+            >
+              <Heart
+                size={16}
+                className={liked ? "fill-rose-500 text-rose-500" : "group-hover:scale-110 transition-transform"}
+              />
+              <span style={{ fontSize: "0.875rem", fontWeight: 600, color: liked ? "#f43f5e" : "inherit" }}>
+                {likes}
               </span>
-            </span>
+            </button>
             <span className="flex items-center gap-1.5">
               <MessageCircle size={16} />
               <span style={{ fontSize: "0.875rem", fontWeight: 600 }}>

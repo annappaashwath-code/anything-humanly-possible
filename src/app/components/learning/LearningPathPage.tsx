@@ -16,6 +16,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { learningCategories, type Milestone, type Resource } from "./learningData";
+import { logActivity } from "../dashboard/dashboardStore";
 
 // ─── Progress Storage ────────────────────────────────────────
 
@@ -454,6 +455,16 @@ export function LearningPathPage() {
       const next = !progress[milestoneId];
       setProgress(category.id, milestoneId, next);
       setProgressState((prev) => ({ ...prev, [milestoneId]: next }));
+
+      if (next) {
+        const ms = category.milestones.find((m) => m.id === milestoneId);
+        logActivity({
+          type: "milestone_unlocked",
+          title: `Milestone: ${ms?.title || milestoneId}`,
+          detail: category.title,
+          categorySlug: category.slug,
+        }).catch(() => {});
+      }
     },
     [category, progress]
   );

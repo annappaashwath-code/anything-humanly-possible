@@ -38,7 +38,14 @@ import {
   type MentorModule,
 } from "./mentorData";
 import { projectId, publicAnonKey } from "/utils/supabase/info";
-import { logActivity, loadProgress, saveProgress, getSessionId } from "../dashboard/dashboardStore";
+import {
+  logActivity,
+  loadProgress,
+  saveProgress,
+  getSessionId,
+  enrollCourse,
+  saveMentorMemory,
+} from "../dashboard/dashboardStore";
 
 const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-ef0ca726`;
 
@@ -1884,6 +1891,30 @@ export function MentorSessionPage() {
     fetchProgress().then((p) => setProgress(p));
   }, []);
 
+  // Enroll course and log session start for dashboard
+  useEffect(() => {
+    if (!mentor || !category) return;
+    enrollCourse(category.slug, mentor.id).catch(() => {});
+    logActivity({
+      type: "session_started",
+      title: `Started session with ${mentor.name}`,
+      detail: mentor.course.title,
+      mentorId: mentor.id,
+      categorySlug: category.slug,
+    }).catch(() => {});
+    saveMentorMemory({
+      mentorId: mentor.id,
+      mentorName: mentor.name,
+      categorySlug: category.slug,
+      totalSessions: 1,
+      lastSessionAt: new Date().toISOString(),
+      lastTopic: mentor.course.title,
+      strengths: mentor.specialties.slice(0, 2),
+      weakAreas: [],
+      suggestedNext: mentor.course.modules[0]?.lessons[0]?.title || "First Lesson",
+    }).catch(() => {});
+  }, [mentor?.id, category?.slug]);
+
   // Auto-scroll chat
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -1949,6 +1980,29 @@ export function MentorSessionPage() {
       setInput("");
       setMood("thinking");
       setIsTyping(true);
+
+      // Track question activity for dashboard
+      if (category) {
+        logActivity({
+          type: "question_asked",
+          title: `Asked ${mentor.name}`,
+          detail: text.trim().slice(0, 60),
+          mentorId: mentor.id,
+          categorySlug: category.slug,
+        }).catch(() => {});
+        saveMentorMemory({
+          mentorId: mentor.id,
+          mentorName: mentor.name,
+          categorySlug: category.slug,
+          totalSessions: 1,
+          lastSessionAt: new Date().toISOString(),
+          lastTopic: text.trim().slice(0, 60),
+          strengths: mentor.specialties.slice(0, 2),
+          weakAreas: [],
+          suggestedNext: activeLesson?.title || mentor.course.modules[0]?.lessons[0]?.title || "Continue Lesson",
+        }).catch(() => {});
+      }
+
       try {
         const { text: reply, isAI } = await getAIResponse(updatedMessages, mentor, activeLesson);
         if (isAIMode === null) setIsAIMode(isAI);
@@ -1963,7 +2017,7 @@ export function MentorSessionPage() {
         speakResponse(response);
       }
     },
-    [mentor, activeLesson, speakResponse, messages, isAIMode],
+    [mentor, category, activeLesson, speakResponse, messages, isAIMode],
   );
 
   const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); sendMessage(input); };
@@ -1992,6 +2046,20 @@ export function MentorSessionPage() {
     recognition.start();
   }, [isListening, sendMessage]);
 
+  // Flatten all lessons for sequential navigation
+  const allLessons = useMemo(() => {
+    if (!mentor) return [];
+    return mentor.course.modules.flatMap((m) => m.lessons);
+  }, [mentor]);
+
+  const currentLessonIndex = useMemo(() => {
+    if (!activeLesson) return -1;
+    return allLessons.findIndex((l) => l.id === activeLesson.id);
+  }, [activeLesson, allLessons]);
+
+  const prevLesson = currentLessonIndex > 0 ? allLessons[currentLessonIndex - 1] : null;
+  const nextLesson = currentLessonIndex >= 0 && currentLessonIndex < allLessons.length - 1 ? allLessons[currentLessonIndex + 1] : null;
+
   const completeLesson = useCallback(() => {
     if (!activeLesson) return;
     const wasComplete = progress[activeLesson.id];
@@ -2009,22 +2077,21 @@ export function MentorSessionPage() {
         mentorId: mentor?.id,
         categorySlug: category?.slug,
       }).catch(() => {});
+      if (mentor && category) {
+        saveMentorMemory({
+          mentorId: mentor.id,
+          mentorName: mentor.name,
+          categorySlug: category.slug,
+          totalSessions: 1,
+          lastSessionAt: new Date().toISOString(),
+          lastTopic: activeLesson.title,
+          strengths: mentor.specialties.slice(0, 2),
+          weakAreas: [],
+          suggestedNext: nextLesson?.title || "Course Completed!",
+        }).catch(() => {});
+      }
     }
-  }, [activeLesson, progress, mentor, category]);
-
-  // Flatten all lessons for sequential navigation
-  const allLessons = useMemo(() => {
-    if (!mentor) return [];
-    return mentor.course.modules.flatMap((m) => m.lessons);
-  }, [mentor]);
-
-  const currentLessonIndex = useMemo(() => {
-    if (!activeLesson) return -1;
-    return allLessons.findIndex((l) => l.id === activeLesson.id);
-  }, [activeLesson, allLessons]);
-
-  const prevLesson = currentLessonIndex > 0 ? allLessons[currentLessonIndex - 1] : null;
-  const nextLesson = currentLessonIndex >= 0 && currentLessonIndex < allLessons.length - 1 ? allLessons[currentLessonIndex + 1] : null;
+  }, [activeLesson, progress, mentor, category, nextLesson]);
 
   const navigateToLesson = useCallback((lesson: MentorLesson) => {
     setActiveLesson(lesson);

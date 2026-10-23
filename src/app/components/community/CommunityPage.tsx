@@ -32,7 +32,11 @@ import {
   type CommunityPost,
   type UpcomingEvent,
 } from "./communityData";
-import { fetchCommunityStories, publishCommunityStory } from "../../lib/communityService";
+import {
+  fetchCommunityStories,
+  publishCommunityStory,
+  toggleLikeCommunityStory,
+} from "../../lib/communityService";
 
 // ─── Helpers ─────────────────────────────────────────────────
 
@@ -89,10 +93,12 @@ function FeaturedPostCard({
   post,
   onTagClick,
   onClick,
+  onLike,
 }: {
   post: CommunityPost;
   onTagClick: (tag: string) => void;
   onClick: () => void;
+  onLike?: (id: string) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
@@ -206,7 +212,13 @@ function FeaturedPostCard({
         <div className="flex items-center justify-between pt-3" style={{ borderTop: "1px solid rgba(0,0,0,0.04)" }}>
           <div className="flex items-center gap-4" style={{ color: "rgba(0,0,0,0.3)" }}>
             <button
-              onClick={(e) => { e.stopPropagation(); setLiked(!liked); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!liked) {
+                  setLiked(true);
+                  onLike?.(post.id);
+                }
+              }}
               className="flex items-center gap-1 hover:text-rose-500 transition-colors duration-200 cursor-pointer"
             >
               <Heart size={14} className={liked ? "fill-rose-500 text-rose-500" : ""} />
@@ -236,11 +248,13 @@ function PostCard({
   index,
   onTagClick,
   onClick,
+  onLike,
 }: {
   post: CommunityPost;
   index: number;
   onTagClick: (tag: string) => void;
   onClick: () => void;
+  onLike?: (id: string) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-30px" });
@@ -338,7 +352,13 @@ function PostCard({
         <div className="flex items-center justify-between pt-3" style={{ borderTop: "1px solid rgba(0,0,0,0.04)" }}>
           <div className="flex items-center gap-3" style={{ color: "rgba(0,0,0,0.3)" }}>
             <button
-              onClick={(e) => { e.stopPropagation(); setLiked(!liked); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!liked) {
+                  setLiked(true);
+                  onLike?.(post.id);
+                }
+              }}
               className="flex items-center gap-1 hover:text-rose-500 transition-colors duration-200 cursor-pointer"
             >
               <Heart size={13} className={liked ? "fill-rose-500 text-rose-500" : ""} />
@@ -878,6 +898,15 @@ export function CommunityPage() {
     setPosts(updated);
   }, []);
 
+  const handleLike = useCallback(async (storyId: string) => {
+    const updatedLikes = await toggleLikeCommunityStory(storyId);
+    if (updatedLikes !== null) {
+      setPosts((prev) =>
+        prev.map((p) => (p.id === storyId ? { ...p, likes: updatedLikes } : p))
+      );
+    }
+  }, []);
+
   // Filter & sort
   const filteredPosts = useMemo(() => {
     let result = [...posts];
@@ -1091,6 +1120,7 @@ export function CommunityPage() {
                         post={post}
                         onTagClick={setActiveTag}
                         onClick={() => navigate(`/community/${post.id}`)}
+                        onLike={handleLike}
                       />
                     ))}
                   </div>
@@ -1105,6 +1135,7 @@ export function CommunityPage() {
                       index={i}
                       onTagClick={setActiveTag}
                       onClick={() => navigate(`/community/${post.id}`)}
+                      onLike={handleLike}
                     />
                   ))}
                 </div>

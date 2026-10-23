@@ -247,8 +247,17 @@ export async function loadMentorMemories(): Promise<MentorMemory[]> {
 export async function saveMentorMemory(memory: MentorMemory): Promise<MentorMemory[]> {
   const all = await loadMentorMemories();
   const idx = all.findIndex((m) => m.mentorId === memory.mentorId);
-  if (idx >= 0) all[idx] = memory;
-  else all.push(memory);
+  if (idx >= 0) {
+    all[idx] = {
+      ...all[idx],
+      ...memory,
+      totalSessions: (all[idx].totalSessions || 1) + 1,
+      lastSessionAt: memory.lastSessionAt || new Date().toISOString(),
+      strengths: Array.from(new Set([...(all[idx].strengths || []), ...(memory.strengths || [])])),
+    };
+  } else {
+    all.push(memory);
+  }
   localStorage.setItem("ahp-mentor-memories", JSON.stringify(all));
   const sid = getSessionId();
   await kvPost(`/dashboard/mentor-memory/${sid}`, { data: all });
