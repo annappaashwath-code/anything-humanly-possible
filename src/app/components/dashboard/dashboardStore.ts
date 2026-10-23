@@ -443,6 +443,23 @@ export async function signUpWithSupabase(
     });
 
     if (error) {
+      // If user is already registered or rate-limited on confirmation email, try signing in directly
+      if (
+        error.message.toLowerCase().includes("rate limit") ||
+        error.message.toLowerCase().includes("already registered") ||
+        error.message.toLowerCase().includes("already exists")
+      ) {
+        const loginAttempt = await signInWithSupabase(email, password);
+        if (loginAttempt.success) {
+          return { success: true };
+        }
+        if (loginAttempt.error?.toLowerCase().includes("email not confirmed")) {
+          return {
+            success: false,
+            error: "Account already exists! Please confirm the link sent to your email, or disable 'Confirm email' in Supabase.",
+          };
+        }
+      }
       return { success: false, error: error.message };
     }
 
@@ -488,6 +505,23 @@ export async function signInWithSupabase(
     });
 
     if (error) {
+      // If user is already registered or rate-limited on confirmation email, try signing in directly
+      if (
+        error.message.toLowerCase().includes("rate limit") ||
+        error.message.toLowerCase().includes("already registered") ||
+        error.message.toLowerCase().includes("already exists")
+      ) {
+        const loginAttempt = await signInWithSupabase(email, password);
+        if (loginAttempt.success) {
+          return { success: true };
+        }
+        if (loginAttempt.error?.toLowerCase().includes("email not confirmed")) {
+          return {
+            success: false,
+            error: "Account already exists! Please confirm the link sent to your email, or disable 'Confirm email' in Supabase.",
+          };
+        }
+      }
       return { success: false, error: error.message };
     }
 
